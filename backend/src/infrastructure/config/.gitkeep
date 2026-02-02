@@ -1,0 +1,3 @@
+# Infrastructure Layer - Configuration
+
+This directory contains configuration files for database, JWT, Redis, etc.
