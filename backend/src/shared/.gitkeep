@@ -1,0 +1,3 @@
+# Shared Layer
+
+This directory contains constants, enums, exceptions, and utilities shared across layers.
