@@ -6,15 +6,17 @@ This directory contains Docker configuration for the Eventra backend infrastruct
 
 ## Services
 
-### MongoDB (Port 27017)
+### MongoDB (Port 27018)
 - Database for application data
 - Persistent volume: `mongodb_data`
 - Admin credentials configured via environment variables
+- **Note:** Using port 27018 to avoid conflicts with local MongoDB
 
-### Redis (Port 6379)
+### Redis (Port 6380)
 - Caching and session storage
 - Persistent volume: `redis_data`
 - Password authentication enabled
+- **Note:** Using port 6380 to avoid conflicts with local Redis
 
 ### Mongo Express (Port 8081)
 - Web-based MongoDB admin interface
