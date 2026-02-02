@@ -28,6 +28,23 @@ services:
     networks:
       - eventra-network
 
+  mongo-express:
+    image: mongo-express:latest
+    container_name: eventra-mongo-express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongodb
+    networks:
+      - eventra-network
+
 volumes:
   mongodb_data:
     driver: local
