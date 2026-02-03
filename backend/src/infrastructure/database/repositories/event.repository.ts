@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IEventRepository } from '@core/interfaces/event.repository.interface';
+import { IEventRepository, EventFilters, PaginationOptions, PaginatedResult } from '@core/interfaces/event.repository.interface';
 import { Event } from '@core/entities/event.entity';
 import { EventDocument } from '@infrastructure/database/schemas/event.schema';
 import { EventStatus } from '@shared/enums/event-status.enum';
@@ -32,6 +32,36 @@ export class EventRepository implements IEventRepository {
     const query = filters || {};
     const docs = await this.eventModel.find(query).exec();
     return docs.map((doc) => this.toEntity(doc));
+  }
+
+  async findWithFilters(filters: EventFilters, pagination: PaginationOptions): Promise<PaginatedResult<Event>> {
+    const query: Record<string, unknown> = {};
+
+    if (filters.status) query.status = filters.status;
+    if (filters.organizerId) query.organizerId = filters.organizerId;
+    if (filters.category) query.category = filters.category;
+    if (filters.type) query.type = filters.type;
+    if (filters.search) {
+      query.$or = [
+        { title: { $regex: filters.search, $options: 'i' } },
+        { summary: { $regex: filters.search, $options: 'i' } },
+        { category: { $regex: filters.search, $options: 'i' } },
+      ];
+    }
+
+    const skip = (pagination.page - 1) * pagination.limit;
+    const [docs, total] = await Promise.all([
+      this.eventModel.find(query).skip(skip).limit(pagination.limit).sort({ createdAt: -1 }).exec(),
+      this.eventModel.countDocuments(query).exec(),
+    ]);
+
+    return {
+      data: docs.map((doc) => this.toEntity(doc)),
+      total,
+      page: pagination.page,
+      limit: pagination.limit,
+      totalPages: Math.ceil(total / pagination.limit),
+    };
   }
 
   async update(id: string, data: Partial<Event>): Promise<Event | null> {
