@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { IUserRepository } from '@core/interfaces/user.repository.interface';
 import { JwtService } from '@infrastructure/services/jwt.service';
 import { RefreshTokenDto, AuthResponse } from '@application/dto/auth/auth.dto';
@@ -6,6 +6,7 @@ import { RefreshTokenDto, AuthResponse } from '@application/dto/auth/auth.dto';
 @Injectable()
 export class RefreshTokenUseCase {
   constructor(
+    @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
     private readonly jwtService: JwtService,
   ) {}
