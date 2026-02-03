@@ -1,0 +1,138 @@
+# Auth Types
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  avatar: String
+  isEmailVerified: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+# Event Types
+type Event {
+  id: ID!
+  slug: String!
+  title: String!
+  summary: String!
+  description: [String!]!
+  category: String!
+  type: EventType!
+  status: EventStatus!
+  hero: HeroImage!
+  dateTime: DateTime!
+  location: Location!
+  capacity: Int!
+  bookedCount: Int!
+  organizerId: ID!
+  highlights: [Highlight!]!
+  availableSeats: Int!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type HeroImage {
+  url: String!
+  alt: String!
+  width: Int
+  height: Int
+}
+
+type DateTime {
+  start: String!
+  end: String!
+  timezone: String!
+  display: String!
+  duration: String!
+}
+
+type Location {
+  mode: String!
+  country: String!
+  city: String!
+  address: String
+  venue: String
+  coordinates: Coordinates
+}
+
+type Coordinates {
+  lat: Float!
+  lng: Float!
+}
+
+type Highlight {
+  icon: String!
+  text: String!
+}
+
+# Reservation Types
+type Reservation {
+  id: ID!
+  eventId: ID!
+  userId: ID!
+  quantity: Int!
+  status: ReservationStatus!
+  ticketCode: String!
+  confirmedAt: String
+  canceledAt: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+# Enums
+enum EventType {
+  ONLINE
+  IN_PERSON
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  REFUSED
+  CANCELED
+}
+
+# Input Types
+input RegisterInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+# Queries
+type Query {
+  me: User!
+  events: [Event!]!
+  event(slug: String!): Event
+  myReservations: [Reservation!]!
+}
+
+# Mutations
+type Mutation {
+  register(input: RegisterInput!): AuthResponse!
+  login(input: LoginInput!): AuthResponse!
+  refreshToken(input: RefreshTokenInput!): AuthResponse!
+}
