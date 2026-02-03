@@ -1,8 +1,8 @@
 export class Permission {
-  id: string; // UUID v7
-  resource: string; // event, reservation, role, user
-  action: string; // create, read, update, delete, cancel, confirm
-  slug: string; // event:create, reservation:cancel
+  id: string;
+  resource: string;
+  action: string;
+  slug: string;
   description: string;
   createdAt: Date;
 
