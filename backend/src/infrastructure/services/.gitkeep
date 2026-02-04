@@ -1,0 +1,3 @@
+# Infrastructure Layer - Services
+
+This directory contains external service implementations (JWT, Redis, PDF, etc.).

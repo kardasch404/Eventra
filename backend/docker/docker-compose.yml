@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: eventra-mongodb
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: eventra
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - eventra-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: eventra-redis
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    command: redis-server --requirepass "${REDIS_PASSWORD:-redis_pass}"
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - eventra-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: eventra-mongo-express
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongodb
+    networks:
+      - eventra-network
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  eventra-network:
+    driver: bridge
