@@ -1,0 +1,66 @@
+export const SEED_PERMISSIONS = [
+  { resource: 'event', action: 'create', slug: 'event:create', description: 'Create events' },
+  { resource: 'event', action: 'update', slug: 'event:update', description: 'Update events' },
+  { resource: 'event', action: 'delete', slug: 'event:delete', description: 'Delete events' },
+  { resource: 'event', action: 'publish', slug: 'event:publish', description: 'Publish events' },
+  { resource: 'event', action: 'cancel', slug: 'event:cancel', description: 'Cancel events' },
+  {
+    resource: 'reservation',
+    action: 'create',
+    slug: 'reservation:create',
+    description: 'Create reservations',
+  },
+  {
+    resource: 'reservation',
+    action: 'confirm',
+    slug: 'reservation:confirm',
+    description: 'Confirm reservations',
+  },
+  {
+    resource: 'reservation',
+    action: 'refuse',
+    slug: 'reservation:refuse',
+    description: 'Refuse reservations',
+  },
+  {
+    resource: 'reservation',
+    action: 'cancel',
+    slug: 'reservation:cancel',
+    description: 'Cancel reservations',
+  },
+  { resource: 'role', action: 'create', slug: 'role:create', description: 'Create roles' },
+  { resource: 'role', action: 'update', slug: 'role:update', description: 'Update roles' },
+  { resource: 'user', action: 'read', slug: 'user:read', description: 'Read user data' },
+  { resource: 'user', action: 'update', slug: 'user:update', description: 'Update user data' },
+];
+
+export const SEED_ROLES = [
+  {
+    name: 'Admin',
+    slug: 'admin',
+    description: 'Administrator with full access',
+    isSystem: true,
+    permissions: [
+      'event:create',
+      'event:update',
+      'event:delete',
+      'event:publish',
+      'event:cancel',
+      'reservation:create',
+      'reservation:confirm',
+      'reservation:refuse',
+      'reservation:cancel',
+      'role:create',
+      'role:update',
+      'user:read',
+      'user:update',
+    ],
+  },
+  {
+    name: 'Participant',
+    slug: 'participant',
+    description: 'Regular participant with basic access',
+    isSystem: true,
+    permissions: ['reservation:create'],
+  },
+];
