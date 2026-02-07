@@ -8,6 +8,7 @@ import { RefuseReservationUseCase } from '@application/use-cases/reservations/re
 import { CancelReservationUseCase } from '@application/use-cases/reservations/cancel-reservation.use-case';
 import { GetMyReservationsUseCase } from '@application/use-cases/reservations/get-my-reservations.use-case';
 import { GqlAuthGuard } from '@presentation/guards/gql-auth.guard';
+import { AdminGuard } from '@presentation/guards/admin.guard';
 import { CurrentUser } from '@presentation/decorators/current-user.decorator';
 import { Reservation } from '@core/entities/reservation.entity';
 import { Inject } from '@nestjs/common';
@@ -33,7 +34,7 @@ export class ReservationResolver {
   }
 
   @Query(() => [ReservationType])
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlAuthGuard, AdminGuard)
   async allReservations(): Promise<ReservationType[]> {
     const reservations = await this.reservationRepository.findByUserId('');
     return reservations.map(this.mapReservationToGraphQL);
