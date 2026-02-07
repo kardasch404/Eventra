@@ -7,6 +7,7 @@ export interface IReservationRepository {
   findByTicketCode(ticketCode: string): Promise<Reservation | null>;
   findByUserId(userId: string): Promise<Reservation[]>;
   findByEventId(eventId: string): Promise<Reservation[]>;
+  findAll(): Promise<Reservation[]>;
   update(id: string, data: Partial<Reservation>): Promise<Reservation | null>;
   updateStatus(id: string, status: ReservationStatus): Promise<Reservation | null>;
   delete(id: string): Promise<boolean>;

@@ -36,7 +36,7 @@ export class ReservationResolver {
   @Query(() => [ReservationType])
   @UseGuards(GqlAuthGuard, AdminGuard)
   async allReservations(): Promise<ReservationType[]> {
-    const reservations = await this.reservationRepository.findByUserId('');
+    const reservations = await this.reservationRepository.findAll();
     return reservations.map(this.mapReservationToGraphQL);
   }
 
