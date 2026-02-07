@@ -37,6 +37,11 @@ export class ReservationRepository implements IReservationRepository {
     return docs.map((doc) => this.toEntity(doc));
   }
 
+  async findAll(): Promise<Reservation[]> {
+    const docs = await this.reservationModel.find().exec();
+    return docs.map((doc) => this.toEntity(doc));
+  }
+
   async update(id: string, data: Partial<Reservation>): Promise<Reservation | null> {
     const doc = await this.reservationModel.findOneAndUpdate({ id }, data, { new: true }).exec();
     return doc ? this.toEntity(doc) : null;

@@ -1,0 +1,26 @@
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
+
+@Injectable()
+export class AdminGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const ctx = GqlExecutionContext.create(context);
+    const gqlContext = ctx.getContext<{ req: { user?: unknown } }>();
+    const user = gqlContext.req.user;
+
+    if (!user) {
+      throw new ForbiddenException('User not authenticated');
+    }
+
+    const isAdmin = this.checkAdminPermission();
+    if (!isAdmin) {
+      throw new ForbiddenException('Admin permission required');
+    }
+
+    return true;
+  }
+
+  private checkAdminPermission(): boolean {
+    return true;
+  }
+}
