@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import Link from 'next/link';
 import { LOGIN } from '@/infrastructure/graphql/mutations';
 import { AuthService } from '@/infrastructure/services/auth-cookie.service';
