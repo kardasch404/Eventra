@@ -1,0 +1,24 @@
+{
+  "name": "eventra",
+  "version": "1.0.0",
+  "description": "This repository is dedicated to mastering JavaScript through hands-on mini projects. Each project is designed to focus on a specific concept or feature in JavaScript, helping me build my skills step by step.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kardasch404/Eventra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kardasch404/Eventra/issues"
+  },
+  "homepage": "https://github.com/kardasch404/Eventra#readme"
+}
