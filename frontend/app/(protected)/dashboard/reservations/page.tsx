@@ -3,6 +3,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_MY_RESERVATIONS } from '@/infrastructure/graphql/queries';
 import { ReservationCard } from '@/presentation/components/features/ReservationCard';
+import { ReservationCardSkeleton } from '@/presentation/components/ui';
 
 export default function MyReservationsPage() {
   const { data, loading, error, refetch } = useQuery(GET_MY_RESERVATIONS);
@@ -10,10 +11,11 @@ export default function MyReservationsPage() {
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
+        <h1 className="text-3xl font-bold mb-6">My Reservations</h1>
+        <div className="space-y-4">
+          <ReservationCardSkeleton />
+          <ReservationCardSkeleton />
+          <ReservationCardSkeleton />
         </div>
       </div>
     );
