@@ -55,6 +55,21 @@ export const GET_EVENTS = gql`
   }
 `;
 
+export const GET_ALL_EVENTS = gql`
+  query GetAllEvents {
+    allEvents {
+      id
+      title
+      slug
+      status
+      category
+      capacity
+      bookedCount
+      createdAt
+    }
+  }
+`;
+
 export const GET_EVENT = gql`
   query GetEvent($id: String!) {
     event(id: $id) {
