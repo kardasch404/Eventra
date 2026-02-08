@@ -7,40 +7,53 @@ import { usePathname } from 'next/navigation';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+  const navItems = [
+    { href: '/admin', label: 'Dashboard', icon: '📊' },
+    { href: '/admin/events', label: 'Events', icon: '🎫' },
+    { href: '/admin/reservations', label: 'Reservations', icon: '📋' },
+    { href: '/admin/roles', label: 'Roles', icon: '👥' },
+  ];
+
   return (
     <ProtectedRoute requiredPermission="admin:access">
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex gap-8">
-            <aside className="w-64 bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
-              <nav className="space-y-2">
-                <Link
-                  href="/admin"
-                  className={`block px-4 py-2 rounded ${pathname === '/admin' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  Dashboard
+      <div className="min-h-screen bg-[#1a1a1a]">
+        <nav className="bg-[#0a0a0a] border-b border-gray-800">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-white">Eventra Admin</h1>
+              <div className="flex items-center gap-4">
+                <Link href="/dashboard" className="text-gray-400 hover:text-white text-sm">
+                  User Dashboard
                 </Link>
-                <Link
-                  href="/admin/events"
-                  className={`block px-4 py-2 rounded ${pathname.startsWith('/admin/events') ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  Events
-                </Link>
-                <Link
-                  href="/admin/reservations"
-                  className={`block px-4 py-2 rounded ${pathname === '/admin/reservations' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  Reservations
-                </Link>
-                <Link
-                  href="/admin/roles"
-                  className={`block px-4 py-2 rounded ${pathname === '/admin/roles' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                >
-                  Roles & Permissions
-                </Link>
-              </nav>
+                <button className="text-gray-400 hover:text-white text-sm">Logout</button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div className="container mx-auto px-6 py-8">
+          <div className="flex gap-6">
+            <aside className="w-64 flex-shrink-0">
+              <div className="bg-[#2a2a2a] rounded-lg p-4 sticky top-8">
+                <nav className="space-y-1">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        pathname === item.href
+                          ? 'bg-orange-600 text-white'
+                          : 'text-gray-400 hover:bg-[#3a3a3a] hover:text-white'
+                      }`}
+                    >
+                      <span>{item.icon}</span>
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  ))}
+                </nav>
+              </div>
             </aside>
+
             <main className="flex-1">{children}</main>
           </div>
         </div>

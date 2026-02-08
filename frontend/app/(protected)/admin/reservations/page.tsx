@@ -28,44 +28,63 @@ export default function AdminReservationsPage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-white">Loading...</div>;
 
   const reservations = data?.allReservations || [];
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h1 className="text-3xl font-bold mb-6">Reservations Management</h1>
+    <div className="bg-[#2a2a2a] rounded-lg border border-gray-800">
+      <div className="p-6 border-b border-gray-800">
+        <h1 className="text-3xl font-bold text-white">Reservations Management</h1>
+      </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="w-full">
+          <thead className="bg-[#1a1a1a]">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ticket Code</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Event ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Ticket Code
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                User ID
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Event ID
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Quantity
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {reservations.map((reservation: any) => (
-              <tr key={reservation.id}>
-                <td className="px-6 py-4 whitespace-nowrap font-mono text-sm">{reservation.ticketCode}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">{reservation.userId.slice(0, 8)}...</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">{reservation.eventId.slice(0, 8)}...</td>
-                <td className="px-6 py-4 whitespace-nowrap">{reservation.quantity}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs rounded ${
-                    reservation.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-                    reservation.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                    reservation.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+          <tbody className="divide-y divide-gray-800">
+            {reservations.map((reservation: { id: string; ticketCode: string; userId: string; eventId: string; quantity: number; status: string }) => (
+              <tr key={reservation.id} className="hover:bg-[#1a1a1a]">
+                <td className="px-6 py-4 font-mono text-sm text-orange-400">{reservation.ticketCode}</td>
+                <td className="px-6 py-4 text-sm text-gray-300">{reservation.userId.slice(0, 8)}...</td>
+                <td className="px-6 py-4 text-sm text-gray-300">{reservation.eventId.slice(0, 8)}...</td>
+                <td className="px-6 py-4 text-gray-300">{reservation.quantity}</td>
+                <td className="px-6 py-4">
+                  <span
+                    className={`px-3 py-1 text-xs font-medium rounded-full ${
+                      reservation.status === 'CONFIRMED'
+                        ? 'bg-green-900/30 text-green-400'
+                        : reservation.status === 'PENDING'
+                          ? 'bg-yellow-900/30 text-yellow-400'
+                          : reservation.status === 'CANCELLED'
+                            ? 'bg-red-900/30 text-red-400'
+                            : 'bg-gray-900/30 text-gray-400'
+                    }`}
+                  >
                     {reservation.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                <td className="px-6 py-4 space-x-2">
                   {reservation.status === 'PENDING' && (
                     <>
                       <Button onClick={() => handleConfirm(reservation.id)} variant="primary" size="sm">
