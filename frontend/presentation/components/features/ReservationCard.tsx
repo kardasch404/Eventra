@@ -6,6 +6,7 @@ import { usePermission } from '@/presentation/hooks';
 import { Button } from '@/presentation/components/ui';
 import { Card } from '@/presentation/components/ui';
 import { useState } from 'react';
+import { canCancelReservation, getReservationStatusColor } from '@/shared/utils/reservation.utils';
 
 interface Reservation {
   id: string;
@@ -24,7 +25,7 @@ interface ReservationCardProps {
 }
 
 export function ReservationCard({ reservation, onCanceled }: ReservationCardProps) {
-  const canCancel = usePermission('reservation:cancel');
+  const hasPermission = usePermission('reservation:cancel');
   const [cancelReservation, { loading }] = useMutation(CANCEL_RESERVATION);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -43,6 +44,8 @@ export function ReservationCard({ reservation, onCanceled }: ReservationCardProp
     alert('PDF download functionality will be implemented');
   };
 
+  const canCancel = canCancelReservation(reservation.status, hasPermission);
+
   return (
     <Card className="p-6">
       <div className="flex justify-between items-start mb-4">
@@ -51,15 +54,7 @@ export function ReservationCard({ reservation, onCanceled }: ReservationCardProp
           <p className="text-gray-600">Ticket Code: {reservation.ticketCode}</p>
           <p className="text-gray-600">Quantity: {reservation.quantity}</p>
         </div>
-        <span
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            reservation.status === 'CONFIRMED'
-              ? 'bg-green-100 text-green-800'
-              : reservation.status === 'CANCELED'
-                ? 'bg-red-100 text-red-800'
-                : 'bg-yellow-100 text-yellow-800'
-          }`}
-        >
+        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getReservationStatusColor(reservation.status)}`}>
           {reservation.status}
         </span>
       </div>
@@ -69,7 +64,7 @@ export function ReservationCard({ reservation, onCanceled }: ReservationCardProp
           <Button onClick={downloadPDF}>Download Ticket</Button>
         )}
 
-        {canCancel && reservation.status !== 'CANCELED' ? (
+        {canCancel ? (
           <Button variant="danger" onClick={handleCancel} disabled={loading}>
             {loading ? 'Canceling...' : 'Cancel Reservation'}
           </Button>
