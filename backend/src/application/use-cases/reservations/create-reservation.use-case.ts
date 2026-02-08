@@ -27,7 +27,7 @@ export class CreateReservationUseCase {
       throw new Error('Event is not published');
     }
 
-    if (event.status === EventStatus.CANCELED) {
+    if ((event.status as any) === EventStatus.CANCELED) {
       throw new Error('Event is canceled');
     }
 

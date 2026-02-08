@@ -22,17 +22,17 @@ export class AuthResolver {
   ) {}
 
   @Mutation(() => AuthResponseType)
-  async register(@Args('input') input: RegisterInput): Promise<AuthResponseType> {
+  async register(@Args('input') input: RegisterInput): Promise<any> {
     return this.registerUseCase.execute(input);
   }
 
   @Mutation(() => AuthResponseType)
-  async login(@Args('input') input: LoginInput): Promise<AuthResponseType> {
+  async login(@Args('input') input: LoginInput): Promise<any> {
     return this.loginUseCase.execute(input);
   }
 
   @Mutation(() => AuthResponseType)
-  async refreshToken(@Args('input') input: RefreshTokenInput): Promise<AuthResponseType> {
+  async refreshToken(@Args('input') input: RefreshTokenInput): Promise<any> {
     return this.refreshTokenUseCase.execute(input);
   }
 

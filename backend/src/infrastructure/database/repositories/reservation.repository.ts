@@ -60,6 +60,7 @@ export class ReservationRepository implements IReservationRepository {
   }
 
   private toEntity(doc: ReservationDocument): Reservation {
+    const docWithTimestamps = doc as ReservationDocument & { createdAt: Date; updatedAt: Date };
     return new Reservation({
       id: doc.id,
       eventId: doc.eventId,
@@ -69,8 +70,8 @@ export class ReservationRepository implements IReservationRepository {
       ticketCode: doc.ticketCode,
       confirmedAt: doc.confirmedAt,
       canceledAt: doc.canceledAt,
-      createdAt: doc.createdAt as Date,
-      updatedAt: doc.updatedAt as Date,
+      createdAt: docWithTimestamps.createdAt,
+      updatedAt: docWithTimestamps.updatedAt,
     });
   }
 }

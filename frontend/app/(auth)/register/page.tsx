@@ -32,13 +32,8 @@ export default function RegisterPage() {
       });
 
       if (result?.register) {
-        AuthService.setTokens(result.register.accessToken, result.register.refreshToken);
-        dispatch(setCredentials({
-          user: result.register.user,
-          accessToken: result.register.accessToken,
-          refreshToken: result.register.refreshToken,
-        }));
-        router.push('/events');
+        // Registration successful - redirect to login page
+        router.push('/login?registered=true');
       }
     } catch (err: any) {
       setError(err.message || 'Registration failed');

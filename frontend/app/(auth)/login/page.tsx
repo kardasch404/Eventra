@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@apollo/client/react';
@@ -15,8 +15,11 @@ import { Input, Button, Card, CardBody } from '@/presentation/components/ui';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const [error, setError] = useState('');
+  
+  const isRegistered = searchParams.get('registered') === 'true';
   
   const { register, handleSubmit, formState: { errors } } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -50,6 +53,12 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardBody>
           <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
+          
+          {isRegistered && (
+            <div className="bg-green-50 text-green-600 p-3 rounded-lg mb-4 text-sm">
+              Account created successfully! Please login with your credentials.
+            </div>
+          )}
           
           {error && (
             <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm">
