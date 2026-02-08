@@ -1,56 +1,105 @@
 import { gql } from '@apollo/client';
 
 export const GET_EVENTS = gql`
-  query GetEvents($filters: EventFiltersInput, $pagination: PaginationInput) {
-    getEvents(filters: $filters, pagination: $pagination) {
+  query GetEvents($filters: EventFiltersInput) {
+    events(filters: $filters) {
       events {
         id
         title
         slug
+        summary
         description
         status
-        startDate
-        endDate
+        category
+        type
+        dateTime {
+          start
+          end
+          timezone
+          display
+          duration
+        }
         location {
+          mode
           address
           city
           country
+          venue
+          coordinates {
+            lat
+            lng
+          }
         }
-        maxAttendees
-        currentAttendees
-        heroImage {
+        capacity
+        bookedCount
+        availableSeats
+        hero {
           url
           alt
+          width
+          height
         }
+        highlights {
+          icon
+          text
+        }
+        organizerId
+        createdAt
+        updatedAt
       }
       total
       page
       limit
+      totalPages
     }
   }
 `;
 
 export const GET_EVENT = gql`
   query GetEvent($id: String!) {
-    getEvent(id: $id) {
+    event(id: $id) {
       id
       title
       slug
+      summary
       description
       status
-      startDate
-      endDate
+      category
+      type
+      dateTime {
+        start
+        end
+        timezone
+        display
+        duration
+      }
       location {
+        mode
         address
         city
         country
+        venue
+        coordinates {
+          lat
+          lng
+        }
       }
-      maxAttendees
-      currentAttendees
-      heroImage {
+      capacity
+      bookedCount
+      availableSeats
+      hero {
         url
         alt
+        width
+        height
       }
+      highlights {
+        icon
+        text
+      }
+      organizerId
+      createdAt
+      updatedAt
     }
   }
 `;

@@ -35,6 +35,7 @@ export class UserRepository implements IUserRepository {
   }
 
   private toEntity(doc: UserDocument): User {
+    const docWithTimestamps = doc as UserDocument & { createdAt: Date; updatedAt: Date };
     return new User({
       id: doc.id,
       email: doc.email,
@@ -43,8 +44,8 @@ export class UserRepository implements IUserRepository {
       lastName: doc.lastName,
       avatar: doc.avatar,
       isEmailVerified: doc.isEmailVerified,
-      createdAt: doc.createdAt as Date,
-      updatedAt: doc.updatedAt as Date,
+      createdAt: docWithTimestamps.createdAt,
+      updatedAt: docWithTimestamps.updatedAt,
     });
   }
 }

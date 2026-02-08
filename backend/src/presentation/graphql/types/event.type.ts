@@ -2,8 +2,8 @@ import { Field, ObjectType, ID, Int, Float, registerEnumType } from '@nestjs/gra
 import { EventType as EventTypeEnum } from '@shared/enums/event-type.enum';
 import { EventStatus as EventStatusEnum } from '@shared/enums/event-status.enum';
 
-registerEnumType(EventTypeEnum, { name: 'EventType' });
-registerEnumType(EventStatusEnum, { name: 'EventStatus' });
+registerEnumType(EventTypeEnum, { name: 'EventTypeEnum' });
+registerEnumType(EventStatusEnum, { name: 'EventStatusEnum' });
 
 @ObjectType()
 export class HeroImageType {
