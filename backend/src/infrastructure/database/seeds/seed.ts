@@ -1,0 +1,72 @@
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from '../../../app.module';
+import { getModelToken } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserDocument } from '../schemas/user.schema';
+import { RoleDocument } from '../schemas/role.schema';
+import { PermissionDocument } from '../schemas/permission.schema';
+import { Password } from '../../../core/value-objects/password.vo';
+import { uuidv7 } from 'uuidv7';
+import { SEED_PERMISSIONS, SEED_ROLES } from './roles-permissions.seed';
+
+async function seed() {
+  const app = await NestFactory.createApplicationContext(AppModule);
+
+  const userModel = app.get<Model<UserDocument>>(getModelToken('UserDocument'));
+  const roleModel = app.get<Model<RoleDocument>>(getModelToken('RoleDocument'));
+  const permissionModel = app.get<Model<PermissionDocument>>(getModelToken('PermissionDocument'));
+
+  console.log('🌱 Starting seeding...');
+
+  // Seed Permissions
+  console.log('📝 Seeding permissions...');
+  for (const perm of SEED_PERMISSIONS) {
+    const exists = await permissionModel.findOne({ slug: perm.slug });
+    if (!exists) {
+      await permissionModel.create({ id: uuidv7(), ...perm });
+      console.log(`  ✓ Created permission: ${perm.slug}`);
+    }
+  }
+
+  // Seed Roles
+  console.log('👥 Seeding roles...');
+  for (const role of SEED_ROLES) {
+    const exists = await roleModel.findOne({ slug: role.slug });
+    if (!exists) {
+      await roleModel.create({ id: uuidv7(), ...role });
+      console.log(`  ✓ Created role: ${role.name}`);
+    }
+  }
+
+  // Seed Admin User
+  console.log('👤 Seeding admin user...');
+  const adminEmail = 'admin@eventra.co';
+  const existingAdmin = await userModel.findOne({ email: adminEmail });
+
+  if (!existingAdmin) {
+    const hashedPassword = await Password.fromPlainText('eventra');
+    const adminUser = await userModel.create({
+      id: uuidv7(),
+      email: adminEmail,
+      password: hashedPassword.getValue(),
+      firstName: 'admin',
+      lastName: 'admin',
+      isEmailVerified: true,
+    });
+    console.log(`  ✓ Created admin user: ${adminEmail}`);
+    console.log(`    - Password: eventra`);
+    console.log(`    - ID: ${adminUser.id}`);
+  } else {
+    console.log(`  ℹ Admin user already exists: ${adminEmail}`);
+  }
+
+  console.log('✅ Seeding completed!');
+  await app.close();
+}
+
+seed()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error('❌ Seeding failed:', error);
+    process.exit(1);
+  });
