@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@apollo/client/react';
 import { LOGIN, REGISTER } from '@/infrastructure/graphql/mutations';
 import { AuthService } from '@/infrastructure/services/auth-cookie.service';
-import { useAppDispatch } from '@/shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 import { setCredentials, logout as logoutAction } from '@/shared/store';
 
 export function useAuth() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   const [loginMutation] = useMutation(LOGIN);
   const [registerMutation] = useMutation(REGISTER);
@@ -52,5 +53,5 @@ export function useAuth() {
     router.push('/login');
   };
 
-  return { login, register, logout };
+  return { user, isAuthenticated, login, register, logout };
 }
