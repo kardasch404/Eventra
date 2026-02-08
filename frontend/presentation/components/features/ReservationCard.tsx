@@ -40,8 +40,18 @@ export function ReservationCard({ reservation, onCanceled }: ReservationCardProp
     }
   };
 
-  const downloadPDF = () => {
-    alert('PDF download functionality will be implemented');
+  const downloadPDF = async () => {
+    try {
+      // Placeholder implementation
+      const link = document.createElement('a');
+      link.href = `data:text/plain,Ticket Code: ${reservation.ticketCode}\nEvent ID: ${reservation.eventId}\nQuantity: ${reservation.quantity}`;
+      link.download = `ticket-${reservation.ticketCode}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      alert('Failed to download ticket');
+    }
   };
 
   const canCancel = canCancelReservation(reservation.status, hasPermission);
