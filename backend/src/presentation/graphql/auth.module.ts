@@ -12,12 +12,20 @@ import { JwtStrategy } from '@infrastructure/services/jwt.strategy';
 import { RefreshTokenStrategy } from '@infrastructure/services/refresh-token.strategy';
 import { UserSchema, UserDocument } from '@infrastructure/database/schemas/user.schema';
 import { UserRepository } from '@infrastructure/database/repositories/user.repository';
+import { EventSchema, EventDocument } from '@infrastructure/database/schemas/event.schema';
+import { EventRepository } from '@infrastructure/database/repositories/event.repository';
+import { ReservationSchema, ReservationDocument } from '@infrastructure/database/schemas/reservation.schema';
+import { ReservationRepository } from '@infrastructure/database/repositories/reservation.repository';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({}),
-    MongooseModule.forFeature([{ name: UserDocument.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: UserDocument.name, schema: UserSchema },
+      { name: EventDocument.name, schema: EventSchema },
+      { name: ReservationDocument.name, schema: ReservationSchema },
+    ]),
   ],
   providers: [
     AuthResolver,
@@ -31,6 +39,14 @@ import { UserRepository } from '@infrastructure/database/repositories/user.repos
     {
       provide: 'IUserRepository',
       useClass: UserRepository,
+    },
+    {
+      provide: 'IEventRepository',
+      useClass: EventRepository,
+    },
+    {
+      provide: 'IReservationRepository',
+      useClass: ReservationRepository,
     },
   ],
   exports: [CustomJwtService],

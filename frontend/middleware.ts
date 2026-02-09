@@ -13,9 +13,17 @@ export function middleware(request: NextRequest) {
     pathname === route || pathname.startsWith(`${route}/`)
   );
 
-  // Redirect authenticated users away from auth pages
+  // Redirect authenticated users away from auth pages to dashboard
+  // Note: The actual role-based redirect happens client-side after login
   if (authRoutes.includes(pathname) && accessToken) {
-    return NextResponse.redirect(new URL('/', request.url));
+    // Don't redirect if coming from a form submission (POST-like navigation)
+    // Let the page handle the redirect based on user role
+    const referer = request.headers.get('referer');
+    if (referer && referer.includes('/login')) {
+      // User just logged in, let the client-side handle redirect
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   // Allow access to public routes
@@ -34,5 +42,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|img|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.ico).*)'],
 };

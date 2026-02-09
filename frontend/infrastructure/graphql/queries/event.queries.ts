@@ -57,15 +57,21 @@ export const GET_EVENTS = gql`
 
 export const GET_ALL_EVENTS = gql`
   query GetAllEvents {
-    allEvents {
-      id
-      title
-      slug
-      status
-      category
-      capacity
-      bookedCount
-      createdAt
+    events {
+      events {
+        id
+        title
+        slug
+        status
+        category
+        capacity
+        bookedCount
+        createdAt
+      }
+      total
+      page
+      limit
+      totalPages
     }
   }
 `;

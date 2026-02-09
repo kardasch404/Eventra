@@ -1,142 +1,71 @@
 'use client';
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { GET_ALL_EVENTS } from '@/infrastructure/graphql/queries';
-import { UPDATE_EVENT, PUBLISH_EVENT, CANCEL_EVENT } from '@/infrastructure/graphql/mutations';
-import { useState } from 'react';
-import { Modal, Button } from '@/presentation/components/ui';
+import { Button } from '@/presentation/components/ui';
+import { EventsTable } from '@/presentation/components/features/admin';
+import Link from 'next/link';
 
-export default function AdminEventsPage() {
-  const { data, loading, refetch } = useQuery(GET_ALL_EVENTS);
-  const [updateEvent] = useMutation(UPDATE_EVENT);
-  const [publishEvent] = useMutation(PUBLISH_EVENT);
-  const [cancelEvent] = useMutation(CANCEL_EVENT);
-  const [editingEvent, setEditingEvent] = useState<any>(null);
-  const [showModal, setShowModal] = useState(false);
+export default function EventsManagementPage() {
+  const { data, loading, error } = useQuery(GET_ALL_EVENTS);
 
-  const handlePublish = async (id: string) => {
-    try {
-      await publishEvent({ variables: { id } });
-      refetch();
-    } catch (error) {
-      console.error('Error publishing event:', error);
-    }
-  };
-
-  const handleCancel = async (id: string) => {
-    try {
-      await cancelEvent({ variables: { id } });
-      refetch();
-    } catch (error) {
-      console.error('Error canceling event:', error);
-    }
-  };
-
-  const handleEdit = (event: any) => {
-    setEditingEvent(event);
-    setShowModal(true);
-  };
-
-  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    try {
-      await updateEvent({
-        variables: {
-          id: editingEvent.id,
-          input: {
-            title: formData.get('title'),
-            status: formData.get('status'),
-          },
-        },
-      });
-      setShowModal(false);
-      refetch();
-    } catch (error) {
-      console.error('Error updating event:', error);
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-
-  const events = data?.allEvents || [];
+  const events = data?.events?.events || [];
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h1 className="text-3xl font-bold mb-6">Events Management</h1>
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Capacity</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Booked</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {events.map((event: any) => (
-              <tr key={event.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{event.title}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs rounded ${
-                    event.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' :
-                    event.status === 'DRAFT' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {event.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{event.category}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{event.capacity}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{event.bookedCount}</td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                  <Button onClick={() => handleEdit(event)} variant="secondary" size="sm">Edit</Button>
-                  {event.status === 'DRAFT' && (
-                    <Button onClick={() => handlePublish(event.id)} variant="primary" size="sm">Publish</Button>
-                  )}
-                  {event.status === 'PUBLISHED' && (
-                    <Button onClick={() => handleCancel(event.id)} variant="danger" size="sm">Cancel</Button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Events Management</h1>
+          <p className="text-gray-400 mt-1">Create, edit, and manage your events</p>
+        </div>
+        <Link href="/admin/events/create">
+          <Button className="bg-orange-600 hover:bg-orange-700">
+            <span className="flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Create Event
+            </span>
+          </Button>
+        </Link>
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Edit Event">
-          <form onSubmit={handleUpdate} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Title</label>
-              <input
-                name="title"
-                defaultValue={editingEvent?.title}
-                className="w-full px-3 py-2 border rounded"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Status</label>
-              <select
-                name="status"
-                defaultValue={editingEvent?.status}
-                className="w-full px-3 py-2 border rounded"
-              >
-                <option value="DRAFT">Draft</option>
-                <option value="PUBLISHED">Published</option>
-                <option value="CANCELLED">Cancelled</option>
-              </select>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button type="button" onClick={() => setShowModal(false)} variant="secondary">Cancel</Button>
-              <Button type="submit" variant="primary">Save</Button>
-            </div>
-          </form>
-      </Modal>
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="bg-[#2a2a2a] rounded-lg p-4 border border-gray-800">
+          <p className="text-gray-400 text-sm">Total Events</p>
+          <p className="text-2xl font-bold text-white mt-1">{events.length}</p>
+        </div>
+        <div className="bg-[#2a2a2a] rounded-lg p-4 border border-gray-800">
+          <p className="text-gray-400 text-sm">Published</p>
+          <p className="text-2xl font-bold text-green-400 mt-1">
+            {events.filter((e: { status: string }) => e.status === 'PUBLISHED').length}
+          </p>
+        </div>
+        <div className="bg-[#2a2a2a] rounded-lg p-4 border border-gray-800">
+          <p className="text-gray-400 text-sm">Drafts</p>
+          <p className="text-2xl font-bold text-yellow-400 mt-1">
+            {events.filter((e: { status: string }) => e.status === 'DRAFT').length}
+          </p>
+        </div>
+        <div className="bg-[#2a2a2a] rounded-lg p-4 border border-gray-800">
+          <p className="text-gray-400 text-sm">Canceled</p>
+          <p className="text-2xl font-bold text-red-400 mt-1">
+            {events.filter((e: { status: string }) => e.status === 'CANCELED').length}
+          </p>
+        </div>
+      </div>
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+          <p className="text-red-400">Error loading events: {error.message}</p>
+        </div>
+      )}
+
+      {/* Events Table */}
+      <EventsTable events={events} isLoading={loading} />
     </div>
   );
 }
