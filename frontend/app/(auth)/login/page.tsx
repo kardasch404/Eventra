@@ -8,6 +8,27 @@ import { useAppDispatch } from '@/shared/store/hooks';
 import { setCredentials } from '@/shared/store/slices/auth.slice';
 import { AuthService } from '@/infrastructure/services/auth-cookie.service';
 
+interface LoginResponse {
+  login: {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+      id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      roles: string[];
+    };
+  };
+}
+
+interface LoginVariables {
+  input: {
+    email: string;
+    password: string;
+  };
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -15,7 +36,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [login, { loading, error }] = useMutation(LOGIN);
+  const [login, { loading, error }] = useMutation<LoginResponse, LoginVariables>(LOGIN);
   
   const isRegistered = searchParams.get('registered') === 'true';
 
@@ -41,7 +62,8 @@ export default function LoginPage() {
         } else if (roles.includes('organizer')) {
           router.push('/dashboard');
         } else {
-          router.push('/events');
+          // Participants and other users go to profile
+          router.push('/profile');
         }
       }
     } catch (err) {
