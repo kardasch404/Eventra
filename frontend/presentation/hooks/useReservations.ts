@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client/react';
 import { GET_MY_RESERVATIONS } from '@/infrastructure/graphql/queries';
 import { CANCEL_RESERVATION } from '@/infrastructure/graphql/mutations';
 

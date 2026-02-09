@@ -5,9 +5,11 @@ import { Model } from 'mongoose';
 import { UserDocument } from '../schemas/user.schema';
 import { RoleDocument } from '../schemas/role.schema';
 import { PermissionDocument } from '../schemas/permission.schema';
+import { EventDocument } from '../schemas/event.schema';
 import { Password } from '../../../core/value-objects/password.vo';
 import { uuidv7 } from 'uuidv7';
 import { SEED_PERMISSIONS, SEED_ROLES } from './roles-permissions.seed';
+import { SEED_EVENTS } from './events.seed';
 
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -15,6 +17,7 @@ async function seed() {
   const userModel = app.get<Model<UserDocument>>(getModelToken('UserDocument'));
   const roleModel = app.get<Model<RoleDocument>>(getModelToken('RoleDocument'));
   const permissionModel = app.get<Model<PermissionDocument>>(getModelToken('PermissionDocument'));
+  const eventModel = app.get<Model<EventDocument>>(getModelToken('EventDocument'));
 
   console.log('🌱 Starting seeding...');
 
@@ -56,8 +59,40 @@ async function seed() {
     console.log(`  ✓ Created admin user: ${adminEmail}`);
     console.log(`    - Password: eventra`);
     console.log(`    - ID: ${adminUser.id}`);
+
+    // Seed Events (after admin user is created so we have an organizer ID)
+    console.log('🎫 Seeding events...');
+    for (const event of SEED_EVENTS) {
+      const exists = await eventModel.findOne({ slug: event.slug });
+      if (!exists) {
+        await eventModel.create({
+          id: uuidv7(),
+          ...event,
+          organizerId: adminUser.id,
+          bookedCount: Math.floor(Math.random() * Math.floor(event.capacity * 0.3)), // Random booked count up to 30%
+        });
+        console.log(`  ✓ Created event: ${event.title}`);
+      }
+    }
   } else {
     console.log(`  ℹ Admin user already exists: ${adminEmail}`);
+
+    // Still seed events if they don't exist
+    console.log('🎫 Seeding events...');
+    for (const event of SEED_EVENTS) {
+      const exists = await eventModel.findOne({ slug: event.slug });
+      if (!exists) {
+        await eventModel.create({
+          id: uuidv7(),
+          ...event,
+          organizerId: existingAdmin.id,
+          bookedCount: Math.floor(Math.random() * Math.floor(event.capacity * 0.3)),
+        });
+        console.log(`  ✓ Created event: ${event.title}`);
+      } else {
+        console.log(`  ℹ Event already exists: ${event.title}`);
+      }
+    }
   }
 
   console.log('✅ Seeding completed!');

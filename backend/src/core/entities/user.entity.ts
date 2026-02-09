@@ -6,12 +6,14 @@ export class User {
   lastName: string;
   avatar?: string;
   isEmailVerified: boolean;
+  roles: string[];
   createdAt: Date;
   updatedAt: Date;
 
   constructor(data: Partial<User>) {
     Object.assign(this, data);
     this.isEmailVerified = data.isEmailVerified ?? false;
+    this.roles = data.roles ?? ['participant'];
     this.createdAt = data.createdAt ?? new Date();
     this.updatedAt = data.updatedAt ?? new Date();
   }
@@ -23,5 +25,13 @@ export class User {
   verifyEmail(): void {
     this.isEmailVerified = true;
     this.updatedAt = new Date();
+  }
+
+  hasRole(role: string): boolean {
+    return this.roles.includes(role);
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole('admin');
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { GET_MY_RESERVATIONS } from '@/infrastructure/graphql/queries';
 import { ReservationCard } from '@/presentation/components/features/ReservationCard';
 import { ReservationCardSkeleton } from '@/presentation/components/ui';

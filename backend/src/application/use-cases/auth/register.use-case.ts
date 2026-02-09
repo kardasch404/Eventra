@@ -49,6 +49,7 @@ export class RegisterUseCase {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        roles,
       },
     };
   }

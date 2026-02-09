@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import { CANCEL_RESERVATION } from '@/infrastructure/graphql/mutations';
 import { usePermission } from '@/presentation/hooks';
 import { Button } from '@/presentation/components/ui';

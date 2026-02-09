@@ -10,7 +10,7 @@ import { setCredentials, logout as logoutAction } from '@/shared/store';
 export function useAuth() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const { user, isAuthenticated, loading } = useAppSelector((state) => state.auth);
 
   const [loginMutation] = useMutation(LOGIN);
   const [registerMutation] = useMutation(REGISTER);
@@ -53,5 +53,5 @@ export function useAuth() {
     router.push('/login');
   };
 
-  return { user, isAuthenticated, login, register, logout };
+  return { user, isAuthenticated, loading, login, register, logout };
 }

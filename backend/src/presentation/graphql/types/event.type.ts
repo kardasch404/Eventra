@@ -7,11 +7,11 @@ registerEnumType(EventStatusEnum, { name: 'EventStatusEnum' });
 
 @ObjectType()
 export class HeroImageType {
-  @Field()
-  url: string;
+  @Field({ nullable: true })
+  url?: string;
 
-  @Field()
-  alt: string;
+  @Field({ nullable: true })
+  alt?: string;
 
   @Field(() => Int, { nullable: true })
   width?: number;
@@ -49,14 +49,14 @@ export class CoordinatesType {
 
 @ObjectType()
 export class LocationType {
-  @Field()
-  mode: string;
+  @Field({ nullable: true })
+  mode?: string;
 
-  @Field()
-  country: string;
+  @Field({ nullable: true })
+  country?: string;
 
-  @Field()
-  city: string;
+  @Field({ nullable: true })
+  city?: string;
 
   @Field({ nullable: true })
   address?: string;
@@ -103,14 +103,14 @@ export class EventType {
   @Field(() => EventStatusEnum)
   status: EventStatusEnum;
 
-  @Field(() => HeroImageType)
-  hero: HeroImageType;
+  @Field(() => HeroImageType, { nullable: true })
+  hero?: HeroImageType;
 
   @Field(() => DateTimeType)
   dateTime: DateTimeType;
 
-  @Field(() => LocationType)
-  location: LocationType;
+  @Field(() => LocationType, { nullable: true })
+  location?: LocationType;
 
   @Field(() => Int)
   capacity: number;
