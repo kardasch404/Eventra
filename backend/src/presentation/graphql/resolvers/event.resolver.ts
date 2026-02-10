@@ -31,7 +31,9 @@ export class EventResolver {
   ) {}
 
   @Query(() => PaginatedEventsType)
-  async events(@Args('filters', { nullable: true }) filters?: EventFiltersInput): Promise<PaginatedEventsType> {
+  async events(
+    @Args('filters', { nullable: true }) filters?: EventFiltersInput,
+  ): Promise<PaginatedEventsType> {
     const page = filters?.page || 1;
     const limit = filters?.limit || 10;
 
@@ -75,13 +77,13 @@ export class EventResolver {
   ): Promise<EventType> {
     const startDate = new Date(input.dateTime.start);
     const endDate = new Date(input.dateTime.end);
-    
+
     // Calculate duration string
     const durationMs = endDate.getTime() - startDate.getTime();
     const hours = Math.floor(durationMs / (1000 * 60 * 60));
     const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
     const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-    
+
     // Generate display string
     const display = startDate.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -141,13 +143,13 @@ export class EventResolver {
     if (input.dateTime) {
       const startDate = new Date(input.dateTime.start);
       const endDate = new Date(input.dateTime.end);
-      
+
       // Calculate duration string
       const durationMs = endDate.getTime() - startDate.getTime();
       const hours = Math.floor(durationMs / (1000 * 60 * 60));
       const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
       const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-      
+
       // Generate display string
       const display = startDate.toLocaleDateString('en-US', {
         weekday: 'long',
@@ -181,21 +183,31 @@ export class EventResolver {
 
   @Mutation(() => EventType)
   @UseGuards(GqlAuthGuard)
-  async publishEvent(@Args('id') id: string, @CurrentUser() user: { sub: string }): Promise<EventType> {
+  async publishEvent(
+    @Args('id') id: string,
+    @CurrentUser() user: { sub: string },
+  ): Promise<EventType> {
     const event = await this.publishEventUseCase.execute(id, user.sub);
     return this.mapEventToGraphQL(event);
   }
 
   @Mutation(() => EventType)
   @UseGuards(GqlAuthGuard)
-  async cancelEvent(@Args('id') id: string, @CurrentUser() user: { sub: string }): Promise<EventType> {
+  async cancelEvent(
+    @Args('id') id: string,
+    @CurrentUser() user: { sub: string },
+  ): Promise<EventType> {
     const event = await this.cancelEventUseCase.execute(id, user.sub);
     return this.mapEventToGraphQL(event);
   }
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async deleteEvent(@Args('id') id: string, @CurrentUser() _user: { sub: string }): Promise<boolean> {
+  async deleteEvent(
+    @Args('id') id: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @CurrentUser() _user: { sub: string },
+  ): Promise<boolean> {
     await this.eventRepository.delete(id);
     return true;
   }
@@ -210,7 +222,14 @@ export class EventResolver {
       category: event.category,
       type: event.type,
       status: event.status,
-      hero: event.hero,
+      hero: event.hero
+        ? {
+            url: event.hero.url,
+            alt: event.hero.alt,
+            width: event.hero.width,
+            height: event.hero.height,
+          }
+        : undefined,
       dateTime: {
         start: event.dateTime.start.toISOString(),
         end: event.dateTime.end.toISOString(),
@@ -218,7 +237,16 @@ export class EventResolver {
         display: event.dateTime.display,
         duration: event.dateTime.duration,
       },
-      location: event.location,
+      location: event.location
+        ? {
+            mode: event.location.mode,
+            country: event.location.country,
+            city: event.location.city,
+            address: event.location.address,
+            venue: event.location.venue,
+            coordinates: event.location.coordinates,
+          }
+        : undefined,
       capacity: event.capacity,
       bookedCount: event.bookedCount,
       organizerId: event.organizerId,

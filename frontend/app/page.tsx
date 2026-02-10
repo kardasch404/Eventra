@@ -202,14 +202,16 @@ const categories = [
   { name: 'Health', icon: HealthIcon, category: 'HEALTH', color: 'text-teal-600', bgColor: 'bg-teal-50' },
 ];
 
-// Top destinations
+// Top destinations - Moroccan cities with Unsplash images
 const topDestinations = [
-  { name: 'New York', image: '/img/cities/new-york.jpg', slug: 'new-york' },
-  { name: 'Los Angeles', image: '/img/cities/los-angeles.jpg', slug: 'los-angeles' },
-  { name: 'Chicago', image: '/img/cities/chicago.jpg', slug: 'chicago' },
-  { name: 'Miami', image: '/img/cities/miami.jpg', slug: 'miami' },
-  { name: 'San Francisco', image: '/img/cities/san-francisco.jpg', slug: 'san-francisco' },
-  { name: 'Boston', image: '/img/cities/boston.jpg', slug: 'boston' },
+  { name: 'Casablanca', image: 'https://images.unsplash.com/photo-1577147443647-81856d5150a6?w=600&h=400&fit=crop', slug: 'casablanca' },
+  { name: 'Marrakech', image: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=600&h=400&fit=crop', slug: 'marrakech' },
+  { name: 'Rabat', image: 'https://images.unsplash.com/photo-1569383746724-6f1b882b8f46?w=600&h=400&fit=crop', slug: 'rabat' },
+  { name: 'Tangier', image: 'https://images.unsplash.com/photo-1553899017-92b0ffc5a3b9?w=600&h=400&fit=crop', slug: 'tangier' },
+  { name: 'Fes', image: 'https://images.unsplash.com/photo-1549924231-f129b911e442?w=600&h=400&fit=crop', slug: 'fes' },
+  { name: 'Agadir', image: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&h=400&fit=crop', slug: 'agadir' },
+  { name: 'Meknes', image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&h=400&fit=crop', slug: 'meknes' },
+  { name: 'Oujda', image: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600&h=400&fit=crop', slug: 'oujda' },
 ];
 
 export default function HomePage() {
@@ -225,56 +227,24 @@ export default function HomePage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-white">
-        {/* Hero Banner - Eventbrite Style */}
-        <section className="relative bg-gradient-to-br from-[#1e0a3c] via-[#3d1d72] to-[#d1410c]">
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] bg-orange-500/20 rounded-full blur-3xl" />
-            <div className="absolute -bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-3xl" />
+        {/* Hero Banner - Image Only */}
+        <section className="relative h-[300px] md:h-[400px] overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=1920&h=800&fit=crop" 
+              alt="Discover events in Morocco"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           </div>
-          <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24">
-            <div className="max-w-2xl">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Discover your next
-                <span className="block text-orange-400">unforgettable experience</span>
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">
+                Discover Events in Morocco
               </h1>
-              <p className="text-lg md:text-xl text-white/80 mb-8">
-                Find events that match your passions. From concerts to conferences, discover what's happening near you.
+              <p className="text-lg text-white/80">
+                Find the best events happening near you
               </p>
-              {/* Hero Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 flex items-center bg-white rounded-lg px-4 py-3">
-                  <SearchIcon />
-                  <input 
-                    type="text" 
-                    placeholder="Search events, artists, venues..." 
-                    className="flex-1 ml-3 text-gray-700 placeholder-gray-400 focus:outline-none"
-                  />
-                </div>
-                <div className="flex items-center bg-white rounded-lg px-4 py-3 min-w-[200px]">
-                  <LocationIcon />
-                  <input 
-                    type="text" 
-                    placeholder="Location" 
-                    className="flex-1 ml-3 text-gray-700 placeholder-gray-400 focus:outline-none"
-                  />
-                </div>
-                <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
-                  Search
-                </button>
-              </div>
-              {/* Trending Tags */}
-              <div className="mt-6 flex flex-wrap gap-2">
-                <span className="text-white/60 text-sm">Trending:</span>
-                {['Music Festivals', 'Food & Wine', 'Comedy Shows', 'Art Exhibitions'].map((tag) => (
-                  <Link 
-                    key={tag}
-                    href={`/events?search=${encodeURIComponent(tag)}`}
-                    className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors"
-                  >
-                    {tag}
-                  </Link>
-                ))}
-              </div>
             </div>
           </div>
         </section>
@@ -298,22 +268,6 @@ export default function HomePage() {
                   </span>
                 </Link>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Search Bar Section */}
-        <section className="py-6 bg-gray-50 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <h2 className="text-xl font-semibold text-gray-800">Browsing events in</h2>
-              <div className="flex items-center gap-2 text-orange-600 font-semibold cursor-pointer hover:text-orange-700">
-                <LocationIcon />
-                <span>Your Location</span>
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7 10.2l5 5 5-5-1.4-1.4-3.6 3.6-3.6-3.6z"/>
-                </svg>
-              </div>
             </div>
           </div>
         </section>
@@ -462,7 +416,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4">
             {/* Carousel Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Top destinations</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Top destinations in Morocco</h2>
               <div className="flex gap-2">
                 <button className="p-2 rounded-full border border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50">
                   <ChevronLeftIcon />
@@ -478,12 +432,19 @@ export default function HomePage() {
               {topDestinations.map((dest) => (
                 <Link
                   key={dest.slug}
-                  href={`/events?location=${dest.slug}`}
+                  href={`/events?city=${dest.name}`}
                   className="relative flex-shrink-0 w-64 h-40 rounded-xl overflow-hidden group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900">
-                    {/* Placeholder gradient - replace with actual images */}
-                  </div>
+                  <img 
+                    src={dest.image} 
+                    alt={dest.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback gradient if image fails to load
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-700/50 to-gray-900/50" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <h3 className="text-xl font-bold text-white">{dest.name}</h3>
@@ -498,29 +459,32 @@ export default function HomePage() {
         {/* Popular Cities Tags */}
         <section className="py-10 bg-gray-100">
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Popular cities</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Popular cities in Morocco</h2>
             <div className="flex flex-wrap gap-3">
               {[
-                'Things to do in Austin',
-                'Things to do in Denver',
-                'Things to do in Seattle',
-                'Things to do in Phoenix',
-                'Things to do in Detroit',
-                'Things to do in Nashville',
-                'Things to do in San Antonio',
-                'Things to do in Indianapolis',
-              ].map((tag) => (
-                <Link
-                  key={tag}
-                  href={`/events?search=${encodeURIComponent(tag)}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 hover:shadow-md transition-shadow"
-                >
-                  {tag}
-                  <svg className="w-4 h-4 text-gray-400" viewBox="0 0 16 16" fill="currentColor">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M12.291 3.618V3.617H6.217V4.936h3.868L3.572 11.351l.947.932 6.604-6.505v3.967h1.338V3.618h-.17z"/>
-                  </svg>
-                </Link>
-              ))}
+                'Things to do in Casablanca',
+                'Things to do in Marrakech',
+                'Things to do in Rabat',
+                'Things to do in Tangier',
+                'Things to do in Fes',
+                'Things to do in Agadir',
+                'Things to do in Meknes',
+                'Things to do in Oujda',
+              ].map((tag) => {
+                const city = tag.replace('Things to do in ', '');
+                return (
+                  <Link
+                    key={tag}
+                    href={`/events?city=${encodeURIComponent(city)}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 hover:shadow-md transition-shadow"
+                  >
+                    {tag}
+                    <svg className="w-4 h-4 text-gray-400" viewBox="0 0 16 16" fill="currentColor">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M12.291 3.618V3.617H6.217V4.936h3.868L3.572 11.351l.947.932 6.604-6.505v3.967h1.338V3.618h-.17z"/>
+                    </svg>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>

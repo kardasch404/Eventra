@@ -90,9 +90,15 @@ export function Navbar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    const params = new URLSearchParams();
     if (searchQuery.trim()) {
-      router.push(`/events?search=${encodeURIComponent(searchQuery)}`);
+      params.set('search', searchQuery.trim());
     }
+    if (location && location !== 'Your Location') {
+      params.set('city', location);
+    }
+    const queryString = params.toString();
+    router.push(`/events${queryString ? '?' + queryString : ''}`);
   };
 
   return (
@@ -165,15 +171,6 @@ export function Navbar() {
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-1">
-            {/* Create Event */}
-            <Link
-              href="/admin/events/create"
-              className="flex items-center gap-1.5 px-3 py-2 text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors"
-            >
-              <PlusIcon />
-              <span>Create an event</span>
-            </Link>
-
             {/* Likes */}
             <Link
               href="/favorites"
@@ -326,15 +323,6 @@ export function Navbar() {
                 className="flex-1 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
               />
             </div>
-
-            <Link 
-              href="/admin/events/create" 
-              className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <PlusIcon />
-              Create an event
-            </Link>
 
             <Link 
               href="/favorites" 

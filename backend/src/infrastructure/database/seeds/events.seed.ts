@@ -14,7 +14,13 @@ const createFutureDate = (daysFromNow: number, hour: number, minute = 0): Date =
 /**
  * Helper function to create specific date
  */
-const createSpecificDate = (year: number, month: number, day: number, hour: number, minute = 0): Date => {
+const createSpecificDate = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute = 0,
+): Date => {
   return new Date(year, month - 1, day, hour, minute, 0, 0);
 };
 
@@ -56,13 +62,14 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'conflict-without-blowups-3-step-script',
     title: 'Conflict Without Blowups: The 3-Step Script for Calm Conversations',
-    summary: 'Stop blowups before they start. Learn a simple 3-Step Script to bring up issues calmly—without defensiveness—so you build connection.',
+    summary:
+      'Stop blowups before they start. Learn a simple 3-Step Script to bring up issues calmly—without defensiveness—so you build connection.',
     description: [
       'Are you tired of having the same argument every month?',
       'Does trying to bring up a real issue quickly turn into defensiveness, resentment, or a full-blown shutdown?',
-      'You\'re not alone — and it\'s not what you\'re saying… it\'s how you\'re saying it.',
-      'Most couples don\'t have a communication problem. They have a safety problem.',
-      'That\'s why even a simple correction can feel like an attack… and a normal conversation turns into conflict.',
+      "You're not alone — and it's not what you're saying… it's how you're saying it.",
+      "Most couples don't have a communication problem. They have a safety problem.",
+      "That's why even a simple correction can feel like an attack… and a normal conversation turns into conflict.",
       'This high-impact, 60-minute live working session will teach you a simple, repeatable 3-step script to bring up issues clearly and gently — without triggering blowups.',
       '✅ Attend alone or as a couple',
       '✅ Practical and usable the same day',
@@ -72,7 +79,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       '• Start with emotional safety',
       '• Communicate your needs without blame',
       '• End the conversation with teamwork instead of tension',
-      'You\'ll leave with a ready-to-use script that helps your spouse hear you without feeling attacked — so your feedback builds connection instead of conflict.',
+      "You'll leave with a ready-to-use script that helps your spouse hear you without feeling attacked — so your feedback builds connection instead of conflict.",
       'Key Takeaways (in 60 Minutes):',
       '✅ Mindset Shift: The "Right vs. Relationship Test" — when to speak vs. when to wait',
       '✅ Timing Triage: The H.A.L.T. check — how to avoid starting hard conversations emotionally depleted',
@@ -80,7 +87,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       '✅ Step 2 — The Core Message: The I-Statement formula — speak your truth without blame or criticism',
       '✅ Step 3 — The Collaborative Close: Turn complaints into shared solutions and real change',
       '✅ Handling Pushback: What to do when your spouse gets defensive without escalating into a fight',
-      'This is not theory. It\'s a practical tool you can use immediately to start building a healthier, less reactive marriage.',
+      "This is not theory. It's a practical tool you can use immediately to start building a healthier, less reactive marriage.",
       'Stop fighting the same fight. Start solving the problem.',
       'Register now to secure your spot!',
     ],
@@ -88,7 +95,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.ONLINE,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Conflict Without Blowups Workshop',
       width: 800,
       height: 450,
@@ -120,17 +127,18 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'how-to-make-first-sale-amazon',
     title: 'How to Make Your 1st Sale Selling on Amazon',
-    summary: 'Learn the secrets of selling on Amazon, all from the comfort of your couch - join us online!',
+    summary:
+      'Learn the secrets of selling on Amazon, all from the comfort of your couch - join us online!',
     description: [
-      'Join us for an exciting online event where we\'ll spill the secrets of how to earn BIG bucks on Amazon! Women Supporting Other Women!',
-      'Are you ready to unlock the potential of Amazon\'s vast marketplace? Look no further! This event is your golden ticket to learn the ins and outs of making serious cash online.',
-      'Whether you\'re a seasoned entrepreneur or just starting out, our expert speakers will guide you through the process of building a successful Amazon business.',
+      "Join us for an exciting online event where we'll spill the secrets of how to earn BIG bucks on Amazon! Women Supporting Other Women!",
+      "Are you ready to unlock the potential of Amazon's vast marketplace? Look no further! This event is your golden ticket to learn the ins and outs of making serious cash online.",
+      "Whether you're a seasoned entrepreneur or just starting out, our expert speakers will guide you through the process of building a successful Amazon business.",
       'Why attend?',
       '• The #1 Thing You Need To Do in Order to Start Making BOSS Checks on Amazon is Open a FREE Store TODAY!',
       '• Learn how to start earning from selling items in Dollar Tree',
       '• Learn how to find profitable products that will fly off the shelves',
       '• How to Make your 1st sale in 15 Days From the BEST of the Best Women Amazon Sellers!',
-      'Don\'t miss out on this incredible opportunity to revolutionize your online business! Secure your spot now and get ready to make those dollar signs rain!',
+      "Don't miss out on this incredible opportunity to revolutionize your online business! Secure your spot now and get ready to make those dollar signs rain!",
       'Agenda:',
       '8:00 PM - 8:30 PM: 1ST HOT-SELLER ON AMAZON - Join us as we share the 1st hot selling item for the night in groceries!',
       '8:30 PM - 9:30 PM: 2ND HOT SELLER ON AMAZON - Join us as we share the 2nd hot selling item for the night in toys!',
@@ -143,7 +151,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.ONLINE,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Amazon Selling Workshop',
       width: 800,
       height: 450,
@@ -175,7 +183,8 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'itrading-expo-morocco-2026',
     title: 'iTrading Expo Morocco 2026 - June 6-7 (Financial Event)',
-    summary: 'The Ultimate Fintech Hub for Innovation, Connections, and Success With a Special Focus for Traders and Investors',
+    summary:
+      'The Ultimate Fintech Hub for Innovation, Connections, and Success With a Special Focus for Traders and Investors',
     description: [
       'What is iTRADING EXPO?',
       'iTRADING EXPO is the hub where innovation, technology, and finance come together to unlock new possibilities.',
@@ -192,7 +201,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'iTrading Expo Morocco 2026',
       width: 800,
       height: 450,
@@ -227,22 +236,23 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'checkmate-connect-chess-networking-entrepreneurs',
     title: 'Checkmate & Connect: Chess and Networking for Entrepreneurs',
-    summary: 'Join us for an exciting evening of strategic moves and meaningful connections at Checkmate & Connect: Chess and Networking for Entrepreneurs',
+    summary:
+      'Join us for an exciting evening of strategic moves and meaningful connections at Checkmate & Connect: Chess and Networking for Entrepreneurs',
     description: [
       'This unique event blends the intellectual challenges of chess with the opportunities for networking and collaboration among like-minded entrepreneurs.',
-      'Whether you\'re a seasoned chess player or a beginner looking to learn, our event offers a welcoming environment for all skill levels.',
+      "Whether you're a seasoned chess player or a beginner looking to learn, our event offers a welcoming environment for all skill levels.",
       'Engage in friendly chess matches, sharpen your strategic thinking, and test your wits against fellow entrepreneurs.',
-      'Beyond the chessboard, you\'ll have the chance to build valuable professional relationships with a diverse group of entrepreneurs, investors, and business enthusiasts.',
+      "Beyond the chessboard, you'll have the chance to build valuable professional relationships with a diverse group of entrepreneurs, investors, and business enthusiasts.",
       'Share your ideas, seek advice, and explore potential partnerships in an atmosphere designed to foster innovation and growth.',
-      'Don\'t miss this opportunity to make strategic moves in both your game and your business ventures.',
-      '\'Checkmate & Connect\' promises an evening of fun, learning, and networking that could lead to your next entrepreneurial breakthrough.',
+      "Don't miss this opportunity to make strategic moves in both your game and your business ventures.",
+      "'Checkmate & Connect' promises an evening of fun, learning, and networking that could lead to your next entrepreneurial breakthrough.",
       'Join us and let the game of chess inspire your entrepreneurial journey!',
     ],
     category: 'Networking',
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Checkmate & Connect Chess Networking Event',
       width: 800,
       height: 450,
@@ -276,10 +286,11 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'odoo-business-show-casablanca-2026',
     title: 'Odoo Business Show Casablanca',
-    summary: 'Discover how Odoo can transform your business operations at this exclusive showcase event.',
+    summary:
+      'Discover how Odoo can transform your business operations at this exclusive showcase event.',
     description: [
       'The Odoo Business Show comes to Casablanca! Join us for an evening of discovery and innovation.',
-      'Odoo is the world\'s #1 open-source business software used by over 7 million users worldwide. This event will show you why.',
+      "Odoo is the world's #1 open-source business software used by over 7 million users worldwide. This event will show you why.",
       'Attend live demonstrations of: CRM and sales automation, inventory and warehouse management, accounting and invoicing, HR and employee management, e-commerce and website building.',
       'Meet certified Odoo partners who can help implement solutions tailored to your business needs.',
       'Network with business owners and IT professionals who are already leveraging Odoo to streamline their operations.',
@@ -289,7 +300,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Odoo Business Show Casablanca',
       width: 800,
       height: 450,
@@ -323,20 +334,21 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'admission-day-casablanca-2026',
     title: 'Admission Day - Casablanca',
-    summary: 'Open admission day for prospective students featuring campus tours, program presentations, and scholarship information.',
+    summary:
+      'Open admission day for prospective students featuring campus tours, program presentations, and scholarship information.',
     description: [
       'Discover your future at our Admission Day event! This is your opportunity to explore our programs, meet faculty, and learn about the opportunities that await you.',
       'The day will feature: Comprehensive campus tours led by current students, program presentations from all departments, one-on-one sessions with admissions counselors, scholarship and financial aid information sessions.',
-      'Whether you\'re interested in business, engineering, arts, or sciences, our team will help you find the program that\'s right for you.',
+      "Whether you're interested in business, engineering, arts, or sciences, our team will help you find the program that's right for you.",
       'Parents and guardians are welcome to attend. We encourage families to come together and ask questions about student life, career prospects, and support services.',
       'Pre-registration is recommended but walk-ins are welcome. Lunch will be provided for all registered attendees.',
-      'Don\'t miss this chance to take the first step toward your academic and professional future.',
+      "Don't miss this chance to take the first step toward your academic and professional future.",
     ],
     category: 'Education',
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Admission Day Casablanca',
       width: 800,
       height: 450,
@@ -370,11 +382,12 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'jobs-fair-casablanca-2026',
     title: 'Jobs Fair Casablanca - 2026',
-    summary: 'Connect with top employers and discover career opportunities at Morocco\'s largest job fair.',
+    summary:
+      "Connect with top employers and discover career opportunities at Morocco's largest job fair.",
     description: [
       'Jobs Fair Casablanca 2026 is your gateway to career opportunities!',
       'Meet representatives from leading companies across various industries including technology, finance, healthcare, manufacturing, and more.',
-      'Whether you\'re a recent graduate, an experienced professional looking for a change, or exploring new career paths, this event has something for everyone.',
+      "Whether you're a recent graduate, an experienced professional looking for a change, or exploring new career paths, this event has something for everyone.",
       'Features include: On-site interviews with participating companies, resume review sessions with HR professionals, career coaching and advice workshops, networking opportunities with industry leaders.',
       'Bring multiple copies of your resume and dress professionally. Many companies conduct first-round interviews on the spot!',
       'Free admission for all job seekers. Pre-registration recommended.',
@@ -383,7 +396,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Jobs Fair Casablanca 2026',
       width: 800,
       height: 450,
@@ -417,7 +430,8 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'morocco-siema-expo-2026',
     title: 'MOROCCO SIEMA EXPO 2026',
-    summary: 'The premier industrial and manufacturing expo in Morocco showcasing the latest innovations.',
+    summary:
+      'The premier industrial and manufacturing expo in Morocco showcasing the latest innovations.',
     description: [
       'MOROCCO SIEMA EXPO 2026 is the largest industrial and manufacturing exhibition in Morocco.',
       'This prestigious event brings together industry leaders, manufacturers, suppliers, and innovators from around the world.',
@@ -430,7 +444,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     type: EventType.IN_PERSON,
     status: EventStatus.PUBLISHED,
     hero: {
-      url: '/img/evnt.png',
+      url: '/img/event.png',
       alt: 'Morocco SIEMA Expo 2026',
       width: 800,
       height: 450,
@@ -448,7 +462,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       city: 'Casablanca',
       venue: 'OFEC Casablanca',
       address: 'OFEC, Casablanca',
-      coordinates: { lat: 33.5650, lng: -7.6200 },
+      coordinates: { lat: 33.565, lng: -7.62 },
     },
     capacity: 5000,
     highlights: [
