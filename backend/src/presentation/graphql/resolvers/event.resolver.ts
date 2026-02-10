@@ -71,8 +71,28 @@ export class EventResolver {
   @UseGuards(GqlAuthGuard)
   async createEvent(
     @Args('input') input: CreateEventInput,
-    @CurrentUser() user: { userId: string },
+    @CurrentUser() user: { sub: string },
   ): Promise<EventType> {
+    const startDate = new Date(input.dateTime.start);
+    const endDate = new Date(input.dateTime.end);
+    
+    // Calculate duration string
+    const durationMs = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+    
+    // Generate display string
+    const display = startDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: input.dateTime.timezone || 'UTC',
+    });
+
     const event = await this.createEventUseCase.execute(
       {
         title: input.title,
@@ -82,11 +102,14 @@ export class EventResolver {
         type: input.type,
         hero: new HeroImage(input.hero),
         dateTime: new DateTime({
-          start: new Date(input.dateTime.start),
-          end: new Date(input.dateTime.end),
+          start: startDate,
+          end: endDate,
           timezone: input.dateTime.timezone,
+          display,
+          duration,
         }),
         location: new Location({
+          mode: input.type, // Use event type as location mode (ONLINE or IN_PERSON)
           country: input.location.country,
           city: input.location.city,
           address: input.location.address,
@@ -96,7 +119,7 @@ export class EventResolver {
         capacity: input.capacity,
         highlights: input.highlights,
       },
-      user.userId,
+      user.sub,
     );
 
     return this.mapEventToGraphQL(event);
@@ -107,7 +130,7 @@ export class EventResolver {
   async updateEvent(
     @Args('id') id: string,
     @Args('input') input: UpdateEventInput,
-    @CurrentUser() user: { userId: string },
+    @CurrentUser() user: { sub: string },
   ): Promise<EventType> {
     const updateData: Record<string, unknown> = { ...input };
 
@@ -116,33 +139,65 @@ export class EventResolver {
     }
 
     if (input.dateTime) {
+      const startDate = new Date(input.dateTime.start);
+      const endDate = new Date(input.dateTime.end);
+      
+      // Calculate duration string
+      const durationMs = endDate.getTime() - startDate.getTime();
+      const hours = Math.floor(durationMs / (1000 * 60 * 60));
+      const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+      const duration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      
+      // Generate display string
+      const display = startDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: input.dateTime.timezone || 'UTC',
+      });
+
       updateData.dateTime = new DateTime({
-        start: new Date(input.dateTime.start),
-        end: new Date(input.dateTime.end),
+        start: startDate,
+        end: endDate,
         timezone: input.dateTime.timezone,
+        display,
+        duration,
       });
     }
 
     if (input.location) {
-      updateData.location = new Location(input.location);
+      updateData.location = new Location({
+        mode: input.type || 'IN_PERSON', // Use event type or default
+        ...input.location,
+      });
     }
 
-    const event = await this.updateEventUseCase.execute(id, updateData as UpdateEventDto, user.userId);
+    const event = await this.updateEventUseCase.execute(id, updateData as UpdateEventDto, user.sub);
     return this.mapEventToGraphQL(event);
   }
 
   @Mutation(() => EventType)
   @UseGuards(GqlAuthGuard)
-  async publishEvent(@Args('id') id: string, @CurrentUser() user: { userId: string }): Promise<EventType> {
-    const event = await this.publishEventUseCase.execute(id, user.userId);
+  async publishEvent(@Args('id') id: string, @CurrentUser() user: { sub: string }): Promise<EventType> {
+    const event = await this.publishEventUseCase.execute(id, user.sub);
     return this.mapEventToGraphQL(event);
   }
 
   @Mutation(() => EventType)
   @UseGuards(GqlAuthGuard)
-  async cancelEvent(@Args('id') id: string, @CurrentUser() user: { userId: string }): Promise<EventType> {
-    const event = await this.cancelEventUseCase.execute(id, user.userId);
+  async cancelEvent(@Args('id') id: string, @CurrentUser() user: { sub: string }): Promise<EventType> {
+    const event = await this.cancelEventUseCase.execute(id, user.sub);
     return this.mapEventToGraphQL(event);
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async deleteEvent(@Args('id') id: string, @CurrentUser() _user: { sub: string }): Promise<boolean> {
+    await this.eventRepository.delete(id);
+    return true;
   }
 
   private mapEventToGraphQL(event: Event): EventType {

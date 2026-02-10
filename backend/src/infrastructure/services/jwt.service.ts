@@ -23,9 +23,9 @@ export class JwtService {
       roles,
     };
 
-    return this.jwtService.sign(payload, {
+    return this.jwtService.sign(payload as any, {
       secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-      expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRATION', '15m'),
+      expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRATION', '15m') as any,
     });
   }
 
@@ -35,9 +35,9 @@ export class JwtService {
       type: 'refresh',
     };
 
-    return this.jwtService.sign(payload, {
+    return this.jwtService.sign(payload as any, {
       secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-      expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRATION', '7d'),
+      expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRATION', '7d') as any,
     });
   }
 

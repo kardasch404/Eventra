@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IEventRepository, EventFilters, PaginationOptions, PaginatedResult } from '@core/interfaces/event.repository.interface';
+import {
+  IEventRepository,
+  EventFilters,
+  PaginationOptions,
+  PaginatedResult,
+} from '@core/interfaces/event.repository.interface';
 import { Event } from '@core/entities/event.entity';
 import { EventDocument } from '@infrastructure/database/schemas/event.schema';
 import { EventStatus } from '@shared/enums/event-status.enum';
@@ -34,7 +39,10 @@ export class EventRepository implements IEventRepository {
     return docs.map((doc) => this.toEntity(doc));
   }
 
-  async findWithFilters(filters: EventFilters, pagination: PaginationOptions): Promise<PaginatedResult<Event>> {
+  async findWithFilters(
+    filters: EventFilters,
+    pagination: PaginationOptions,
+  ): Promise<PaginatedResult<Event>> {
     const query: Record<string, unknown> = {};
 
     if (filters.status) query.status = filters.status;
@@ -83,6 +91,7 @@ export class EventRepository implements IEventRepository {
   }
 
   private toEntity(doc: EventDocument): Event {
+    const docWithTimestamps = doc as EventDocument & { createdAt: Date; updatedAt: Date };
     return new Event({
       id: doc.id,
       slug: doc.slug,
@@ -99,8 +108,8 @@ export class EventRepository implements IEventRepository {
       bookedCount: doc.bookedCount,
       organizerId: doc.organizerId,
       highlights: doc.highlights,
-      createdAt: doc.createdAt as Date,
-      updatedAt: doc.updatedAt as Date,
+      createdAt: docWithTimestamps.createdAt,
+      updatedAt: docWithTimestamps.updatedAt,
     });
   }
 }

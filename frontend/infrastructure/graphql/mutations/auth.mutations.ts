@@ -10,6 +10,7 @@ export const REGISTER = gql`
         email
         firstName
         lastName
+        roles
       }
     }
   }
@@ -25,6 +26,7 @@ export const LOGIN = gql`
         email
         firstName
         lastName
+        roles
       }
     }
   }

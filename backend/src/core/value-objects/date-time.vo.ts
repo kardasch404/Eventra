@@ -6,7 +6,11 @@ export class DateTime {
   duration: string;
 
   constructor(data: Partial<DateTime>) {
-    Object.assign(this, data);
+    this.start = data.start ? new Date(data.start) : new Date();
+    this.end = data.end ? new Date(data.end) : new Date();
+    this.timezone = data.timezone ?? '';
+    this.display = data.display ?? '';
+    this.duration = data.duration ?? '';
   }
 
   getDurationInHours(): number {

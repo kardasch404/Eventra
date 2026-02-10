@@ -18,6 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "seed": "ts-node -r tsconfig-paths/register src/infrastructure/database/seeds/seed.ts",
+    "seed:simple": "ts-node -r tsconfig-paths/register src/infrastructure/database/seeds/seed-simple.ts",
+    "seed:events": "ts-node -r tsconfig-paths/register src/infrastructure/database/seeds/seed-events.ts",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -28,6 +31,7 @@
   },
   "dependencies": {
     "@apollo/server": "^5.3.0",
+    "@as-integrations/express5": "^1.1.2",
     "@nestjs/apollo": "^13.2.3",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",

@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 import { GET_EVENTS } from '@/infrastructure/graphql/queries';
 
 export default function TestConnection() {

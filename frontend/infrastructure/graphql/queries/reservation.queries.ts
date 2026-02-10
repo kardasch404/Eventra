@@ -2,77 +2,51 @@ import { gql } from '@apollo/client';
 
 export const GET_MY_RESERVATIONS = gql`
   query GetMyReservations {
-    getMyReservations {
+    myReservations {
       id
+      eventId
+      userId
+      quantity
       ticketCode
       status
-      event {
-        id
-        title
-        startDate
-        endDate
-        location {
-          address
-          city
-          country
-        }
-      }
+      confirmedAt
+      canceledAt
       createdAt
+      updatedAt
     }
   }
 `;
 
 export const GET_RESERVATION = gql`
   query GetReservation($id: String!) {
-    getReservation(id: $id) {
+    reservation(id: $id) {
       id
+      eventId
+      userId
+      quantity
       ticketCode
       status
-      event {
-        id
-        title
-        description
-        startDate
-        endDate
-        location {
-          address
-          city
-          country
-        }
-      }
-      user {
-        id
-        email
-        firstName
-        lastName
-      }
+      confirmedAt
+      canceledAt
       createdAt
+      updatedAt
     }
   }
 `;
 
 export const GET_ALL_RESERVATIONS = gql`
-  query GetAllReservations($filters: ReservationFiltersInput, $pagination: PaginationInput) {
-    getAllReservations(filters: $filters, pagination: $pagination) {
-      reservations {
-        id
-        ticketCode
-        status
-        event {
-          id
-          title
-        }
-        user {
-          id
-          email
-          firstName
-          lastName
-        }
-        createdAt
-      }
-      total
-      page
-      limit
+  query GetAllReservations {
+    allReservations {
+      id
+      eventId
+      userId
+      quantity
+      ticketCode
+      status
+      confirmedAt
+      canceledAt
+      createdAt
+      updatedAt
     }
   }
 `;

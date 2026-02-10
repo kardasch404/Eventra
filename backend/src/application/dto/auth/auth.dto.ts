@@ -22,5 +22,6 @@ export class AuthResponse {
     email: string;
     firstName: string;
     lastName: string;
+    roles: string[];
   };
 }

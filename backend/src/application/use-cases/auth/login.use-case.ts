@@ -26,7 +26,8 @@ export class LoginUseCase {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const roles = ['participant'];
+    // Use user's actual roles from the database
+    const roles = user.roles || ['participant'];
     const accessToken = this.jwtService.generateAccessToken(user.id, roles);
     const refreshToken = this.jwtService.generateRefreshToken(user.id);
 
@@ -38,6 +39,7 @@ export class LoginUseCase {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        roles,
       },
     };
   }

@@ -115,6 +115,9 @@ export class UpdateEventInput {
   @Field(() => EventTypeEnum, { nullable: true })
   type?: EventTypeEnum;
 
+  @Field(() => EventStatusEnum, { nullable: true })
+  status?: EventStatusEnum;
+
   @Field(() => HeroImageInput, { nullable: true })
   hero?: HeroImageInput;
 

@@ -23,6 +23,9 @@ export class UserDocument extends Document {
 
   @Prop({ default: false })
   isEmailVerified: boolean;
+
+  @Prop({ type: [String], default: ['participant'] })
+  roles: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
