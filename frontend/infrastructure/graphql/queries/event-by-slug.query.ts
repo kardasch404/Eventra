@@ -2,25 +2,49 @@ import { gql } from '@apollo/client';
 
 export const GET_EVENT_BY_SLUG = gql`
   query GetEventBySlug($slug: String!) {
-    getEventBySlug(slug: $slug) {
+    eventBySlug(slug: $slug) {
       id
       title
       slug
+      summary
       description
       status
-      startDate
-      endDate
+      category
+      type
+      dateTime {
+        start
+        end
+        timezone
+        display
+        duration
+      }
       location {
+        mode
         address
         city
         country
+        venue
+        coordinates {
+          lat
+          lng
+        }
       }
-      maxAttendees
-      currentAttendees
-      heroImage {
+      capacity
+      bookedCount
+      availableSeats
+      hero {
         url
         alt
+        width
+        height
       }
+      highlights {
+        icon
+        text
+      }
+      organizerId
+      createdAt
+      updatedAt
     }
   }
 `;

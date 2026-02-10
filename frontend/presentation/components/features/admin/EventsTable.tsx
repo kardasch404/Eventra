@@ -88,9 +88,9 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-[#2a2a2a] rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800/50 overflow-hidden">
         <div className="p-8 text-center">
-          <div className="w-8 h-8 border-2 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-12 h-12 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-400">Loading events...</p>
         </div>
       </div>
@@ -99,15 +99,22 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
 
   if (events.length === 0) {
     return (
-      <div className="bg-[#2a2a2a] rounded-lg border border-gray-800 p-12 text-center">
-        <div className="w-20 h-20 mx-auto bg-gray-800 rounded-full flex items-center justify-center mb-4">
-          <span className="text-4xl">📅</span>
+      <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800/50 p-12 text-center">
+        <div className="w-20 h-20 mx-auto bg-gradient-to-br from-orange-500/20 to-orange-600/10 rounded-2xl flex items-center justify-center mb-6">
+          <svg className="w-10 h-10 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
         </div>
         <h3 className="text-xl font-semibold text-white mb-2">No events yet</h3>
         <p className="text-gray-400 mb-6">Create your first event to get started.</p>
         <Link href="/admin/events/create">
-          <Button className="bg-orange-600 hover:bg-orange-700">
-            Create Event
+          <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-lg shadow-orange-500/25">
+            <span className="flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Create Event
+            </span>
           </Button>
         </Link>
       </div>
@@ -116,11 +123,11 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
 
   return (
     <>
-      <div className="bg-[#2a2a2a] rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800/50 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800">
+              <tr className="border-b border-gray-800/50 bg-[#0f0f0f]">
                 <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   Event
                 </th>
@@ -144,11 +151,11 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-800/50">
               {events.map((event) => (
                 <tr 
                   key={event.id} 
-                  className="hover:bg-[#333] transition-colors"
+                  className="hover:bg-[#252525] transition-colors group"
                 >
                   <td className="px-6 py-4">
                     <div>
