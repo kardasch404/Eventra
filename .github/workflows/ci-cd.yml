@@ -6,8 +6,12 @@ on:
   pull_request:
     branches: [main, develop]
 
+env:
+  NODE_VERSION: '20'
+
 jobs:
-  backend:
+  backend-lint:
+    name: Backend - Lint
     runs-on: ubuntu-latest
     
     steps:
@@ -17,23 +21,75 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
       
       - name: Install dependencies
         run: cd backend && npm ci
       
-      - name: Lint
+      - name: Run ESLint
         run: cd backend && npm run lint
+
+  backend-test:
+    name: Backend - Test
+    runs-on: ubuntu-latest
+    needs: backend-lint
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      - name: Test
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: Install dependencies
+        run: cd backend && npm ci
+      
+      - name: Run tests
         run: cd backend && npm run test
       
-      - name: Build
-        run: cd backend && npm run build
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          files: ./backend/coverage/lcov.info
+          flags: backend
 
-  frontend:
+  backend-build:
+    name: Backend - Build
+    runs-on: ubuntu-latest
+    needs: backend-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: Install dependencies
+        run: cd backend && npm ci
+      
+      - name: Build application
+        run: cd backend && npm run build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-dist
+          path: backend/dist
+
+  frontend-lint:
+    name: Frontend - Lint
     runs-on: ubuntu-latest
     
     steps:
@@ -43,18 +99,69 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
       
       - name: Install dependencies
         run: cd frontend && npm ci
       
-      - name: Lint
+      - name: Run ESLint
         run: cd frontend && npm run lint
+
+  frontend-test:
+    name: Frontend - Test
+    runs-on: ubuntu-latest
+    needs: frontend-lint
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      - name: Test
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        run: cd frontend && npm ci
+      
+      - name: Run tests
         run: cd frontend && npm run test
       
-      - name: Build
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          files: ./frontend/coverage/lcov.info
+          flags: frontend
+
+  frontend-build:
+    name: Frontend - Build
+    runs-on: ubuntu-latest
+    needs: frontend-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        run: cd frontend && npm ci
+      
+      - name: Build application
         run: cd frontend && npm run build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/.next
