@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 import { setCredentials, logout, setLoading } from '@/shared/store/slices/auth.slice';
 import { AuthService } from '@/infrastructure/services/auth-cookie.service';
@@ -24,9 +24,11 @@ interface MeQueryData {
 export function AuthInitializer({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   const { isAuthenticated, loading: authLoading } = useAppSelector((state) => state.auth);
+  const [mounted, setMounted] = useState(false);
 
-  const accessToken = AuthService.getAccessToken();
-  const refreshToken = AuthService.getRefreshToken();
+  // Only access client-side APIs after mounting
+  const accessToken = mounted ? AuthService.getAccessToken() : null;
+  const refreshToken = mounted ? AuthService.getRefreshToken() : null;
 
   // Only run the query if we have a token but Redux isn't authenticated yet
   const { data, loading: queryLoading, error } = useQuery<MeQueryData>(GET_ME, {
@@ -34,7 +36,15 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
     fetchPolicy: 'network-only',
   });
 
+  // Mark as mounted on client
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Don't run until mounted
+    if (!mounted) return;
+
     // If no token, mark as done loading (user is not logged in)
     if (!accessToken) {
       dispatch(setLoading(false));
@@ -68,10 +78,10 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
     if (!queryLoading && !data?.me && accessToken) {
       dispatch(setLoading(false));
     }
-  }, [accessToken, refreshToken, isAuthenticated, data, queryLoading, error, dispatch]);
+  }, [mounted, accessToken, refreshToken, isAuthenticated, data, queryLoading, error, dispatch]);
 
-  // Show loading state while initializing auth (only when we have a token)
-  if (authLoading && accessToken && queryLoading) {
+  // Show loading state while initializing auth (only when mounted, have a token, and query is loading)
+  if (mounted && authLoading && accessToken && queryLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">

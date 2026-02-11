@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 interface OrderCardProps {
   id: string;
+  eventId: string; // Event ID for filtering tickets
   ticketCode: string;
   eventTitle: string;
   eventImage?: string;
@@ -20,6 +21,7 @@ interface OrderCardProps {
 
 const OrderCard: React.FC<OrderCardProps> = ({
   id,
+  eventId,
   ticketCode,
   eventTitle,
   eventImage,
@@ -67,7 +69,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
 
         {/* Event Image */}
         <Link 
-          href={`/orders/${id}`}
+          href={`/account/tickets?eventId=${eventId}`}
           className={`flex-shrink-0 relative overflow-hidden ${
             isHero 
               ? 'sm:w-[280px] h-44 sm:h-auto sm:my-4' 
@@ -112,7 +114,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         <div className={`flex-1 min-w-0 ${isHero ? 'p-5 sm:pl-5' : 'p-4 sm:pl-4'}`}>
           <div className="flex flex-col h-full">
             {/* Title */}
-            <Link href={`/orders/${id}`}>
+            <Link href={`/account/tickets?eventId=${eventId}`}>
               <h3 className={`font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2 mb-2 ${
                 isHero ? 'text-xl' : 'text-lg'
               }`}>

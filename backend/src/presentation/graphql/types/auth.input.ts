@@ -29,3 +29,12 @@ export class RefreshTokenInput {
   @Field()
   refreshToken: string;
 }
+
+@InputType()
+export class ChangePasswordInput {
+  @Field()
+  currentPassword: string;
+
+  @Field()
+  newPassword: string;
+}

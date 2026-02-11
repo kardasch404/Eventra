@@ -28,8 +28,8 @@ export class ReservationResolver {
 
   @Query(() => [ReservationType])
   @UseGuards(GqlAuthGuard)
-  async myReservations(@CurrentUser() user: { userId: string }): Promise<ReservationType[]> {
-    const reservations = await this.getMyReservationsUseCase.execute(user.userId);
+  async myReservations(@CurrentUser() user: { sub: string }): Promise<ReservationType[]> {
+    const reservations = await this.getMyReservationsUseCase.execute(user.sub);
     return reservations.map(this.mapReservationToGraphQL);
   }
 
@@ -51,14 +51,14 @@ export class ReservationResolver {
   @UseGuards(GqlAuthGuard)
   async createReservation(
     @Args('input') input: CreateReservationInput,
-    @CurrentUser() user: { userId: string },
+    @CurrentUser() user: { sub: string },
   ): Promise<ReservationType> {
     const reservation = await this.createReservationUseCase.execute(
       {
         eventId: input.eventId,
         quantity: input.quantity,
       },
-      user.userId,
+      user.sub,
     );
 
     return this.mapReservationToGraphQL(reservation);
@@ -82,9 +82,9 @@ export class ReservationResolver {
   @UseGuards(GqlAuthGuard)
   async cancelReservation(
     @Args('id') id: string,
-    @CurrentUser() user: { userId: string },
+    @CurrentUser() user: { sub: string },
   ): Promise<ReservationType> {
-    const reservation = await this.cancelReservationUseCase.execute(id, user.userId);
+    const reservation = await this.cancelReservationUseCase.execute(id, user.sub);
     return this.mapReservationToGraphQL(reservation);
   }
 
