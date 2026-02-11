@@ -59,10 +59,8 @@ export default function LoginPage() {
         const roles = data.login.user?.roles || [];
         if (roles.includes('admin')) {
           router.push('/admin');
-        } else if (roles.includes('organizer')) {
-          router.push('/dashboard');
         } else {
-          // Participants and other users go to profile
+          // All users go to profile
           router.push('/profile');
         }
       }

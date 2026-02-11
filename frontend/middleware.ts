@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
       // User just logged in, let the client-side handle redirect
       return NextResponse.next();
     }
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/profile', request.url));
   }
 
   // Allow access to public routes

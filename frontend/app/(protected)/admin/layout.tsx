@@ -110,7 +110,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 )}
                 
                 <Link 
-                  href="/dashboard" 
+                  href="/profile" 
                   className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white hover:bg-[#2a2a2a] rounded-lg transition-all"
                 >
                   <HomeIcon className="w-4 h-4" />

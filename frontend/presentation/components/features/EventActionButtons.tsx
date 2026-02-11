@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/shared/store/hooks';
 import { ReservationModal } from './ReservationModal';
+import { useMutation } from '@apollo/client/react';
+import { CREATE_RESERVATION } from '@/infrastructure/graphql/mutations/reservation.mutations';
 
 export function ShareButton() {
   const handleShare = () => {
@@ -158,7 +160,25 @@ interface GetTicketsButtonProps {
 export function GetTicketsButton({ isFull, status, event }: GetTicketsButtonProps) {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [ticketInfo, setTicketInfo] = useState<{ ticketCode: string; id: string } | null>(null);
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+
+  const [createReservation, { loading }] = useMutation(CREATE_RESERVATION, {
+    onCompleted: (data) => {
+      console.log('Reservation created:', data);
+      setTicketInfo({
+        ticketCode: data.createReservation.ticketCode,
+        id: data.createReservation.id
+      });
+      setIsModalOpen(false);
+      setShowSuccessModal(true);
+    },
+    onError: (error) => {
+      console.error('Reservation error:', error);
+      alert(`Failed to create reservation: ${error.message}`);
+    }
+  });
 
   const handleGetTickets = () => {
     // Check if user is authenticated
@@ -178,6 +198,32 @@ export function GetTicketsButton({ isFull, status, event }: GetTicketsButtonProp
     setIsModalOpen(true);
   };
 
+  const handleReservationSubmit = async (reservationData: any) => {
+    // Calculate total quantity from all ticket types
+    const totalQuantity = reservationData.tickets.reduce(
+      (sum: number, ticket: any) => sum + ticket.quantity,
+      0
+    );
+
+    if (totalQuantity === 0) {
+      alert('Please select at least one ticket');
+      return;
+    }
+
+    try {
+      await createReservation({
+        variables: {
+          input: {
+            eventId: reservationData.eventId,
+            quantity: totalQuantity
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error submitting reservation:', error);
+    }
+  };
+
   const isDisabled = isFull || status !== 'PUBLISHED';
 
   return (
@@ -195,7 +241,65 @@ export function GetTicketsButton({ isFull, status, event }: GetTicketsButtonProp
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         event={event}
+        onSubmit={handleReservationSubmit}
       />
+
+      {/* Success Modal */}
+      {showSuccessModal && ticketInfo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowSuccessModal(false)} />
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8">
+            <div className="text-center">
+              {/* Success Icon */}
+              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Reservation Confirmed!</h3>
+              <p className="text-gray-600 mb-6">Your ticket has been successfully reserved.</p>
+              
+              {/* Ticket Code Display */}
+              <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                <p className="text-sm text-gray-600 mb-2">Your Ticket Code</p>
+                <p className="text-3xl font-bold text-blue-600 tracking-wider">{ticketInfo.ticketCode}</p>
+                <p className="text-xs text-gray-500 mt-2">Save this code for event entry</p>
+              </div>
+
+              {/* Event Details */}
+              <div className="text-left bg-blue-50 rounded-lg p-4 mb-6">
+                <p className="text-sm font-semibold text-gray-700 mb-1">{event.title}</p>
+                <p className="text-xs text-gray-600">
+                  {event.dateTime?.start && new Date(event.dateTime.start).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <button
+                  onClick={() => router.push('/account/tickets')}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+                >
+                  View My Tickets
+                </button>
+                <button
+                  onClick={() => setShowSuccessModal(false)}
+                  className="w-full py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

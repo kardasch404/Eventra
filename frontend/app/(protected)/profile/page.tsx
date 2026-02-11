@@ -3,6 +3,7 @@
 import { useAuth } from '@/presentation/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import React from 'react';
 import {
   ProfileHeader,
   ProfileStickyHeader,
@@ -11,130 +12,47 @@ import {
 } from '@/presentation/components/features/profile';
 import { Navbar } from '@/presentation/components/layouts/Navbar';
 import { Footer } from '@/presentation/components/layouts/Footer';
+import { useQuery } from '@apollo/client/react';
+import { GET_MY_RESERVATIONS } from '@/infrastructure/graphql/queries/reservation.queries';
+import { GET_EVENTS } from '@/infrastructure/graphql/queries/event.queries';
 
-// Mock data for demonstration - replace with actual API calls
-const mockReservations = [
-  {
-    id: '1',
-    ticketCode: '13932854783',
-    status: 'CONFIRMED' as const,
-    event: {
-      id: 'e1',
-      title: 'Odoo Business Show Casablanca',
-      startDate: '2026-02-10T18:00:00Z',
-      endDate: '2026-02-10T22:00:00Z',
-      location: 'Casablanca Convention Center',
-      imageUrl: '/img/evnt.png',
-      organizer: 'Odoo Morocco',
-    },
-    price: 'Free',
-    createdAt: '2025-12-18T17:53:00Z',
-  },
-  {
-    id: '2',
-    ticketCode: '14142627173',
-    status: 'CONFIRMED' as const,
-    event: {
-      id: 'e2',
-      title: 'Admission Day - Casablanca',
-      startDate: '2026-03-14T10:00:00Z',
-      endDate: '2026-03-14T18:00:00Z',
-      location: 'Casablanca, Morocco',
-      imageUrl: '/img/evnt.png',
-      organizer: 'Education Fair Morocco',
-    },
-    price: 'Free',
-    createdAt: '2026-01-27T09:14:00Z',
-  },
-  {
-    id: '3',
-    ticketCode: '13932841953',
-    status: 'CONFIRMED' as const,
-    event: {
-      id: 'e3',
-      title: 'Jobs Fair Casablanca - 2026',
-      startDate: '2026-05-30T10:00:00Z',
-      endDate: '2026-05-30T18:00:00Z',
-      location: 'Hyatt Regency Casablanca',
-      imageUrl: '/img/evnt.png',
-      organizer: 'Morocco Job Events',
-    },
-    price: 'Free',
-    createdAt: '2025-12-18T17:50:00Z',
-  },
-  {
-    id: '4',
-    ticketCode: '14142709483',
-    status: 'CONFIRMED' as const,
-    event: {
-      id: 'e4',
-      title: 'iTrading Expo Morocco 2026 - June 6-7 (Financial Event)',
-      startDate: '2026-06-06T10:00:00Z',
-      endDate: '2026-06-07T18:00:00Z',
-      location: 'Sofitel Casablanca',
-      imageUrl: '/img/evnt.png',
-      organizer: 'iTrading Global',
-    },
-    price: '$0.00',
-    createdAt: '2026-01-27T09:39:00Z',
-  },
-  {
-    id: '5',
-    ticketCode: '14142729963',
-    status: 'CONFIRMED' as const,
-    event: {
-      id: 'e5',
-      title: 'MOROCCO SIEMA EXPO 2026',
-      startDate: '2026-09-22T10:00:00Z',
-      endDate: '2026-09-24T18:00:00Z',
-      location: 'OFEC Casablanca',
-      imageUrl: '/img/evnt.png',
-      organizer: 'SIEMA Organization',
-    },
-    price: 'Free',
-    createdAt: '2026-01-27T09:45:00Z',
-  },
-  {
-    id: '6',
-    ticketCode: '14142760903',
-    status: 'USED' as const,
-    event: {
-      id: 'e6',
-      title: 'STICKS & STONES Köln \'26 - Die Job- & Karrieremesse',
-      startDate: '2026-01-31T10:00:00Z',
-      endDate: '2026-01-31T18:00:00Z',
-      location: 'Köln, Germany',
-      imageUrl: '/img/evnt.png',
-      organizer: 'STICKS & STONES',
-    },
-    price: '€0.00',
-    createdAt: '2026-01-27T09:54:00Z',
-  },
-  {
-    id: '7',
-    ticketCode: '12660427613',
-    status: 'USED' as const,
-    event: {
-      id: 'e7',
-      title: 'New York City Hiring Event',
-      startDate: '2025-10-28T09:30:00Z',
-      endDate: '2025-10-28T16:00:00Z',
-      location: 'New York, NY',
-      imageUrl: '/img/evnt.png',
-      organizer: 'NYC Career Events',
-    },
-    price: 'Free',
-    createdAt: '2025-06-13T17:16:00Z',
-  },
-];
+interface Event {
+  id: string;
+  title: string;
+  slug: string;
+  dateTime: {
+    start: string;
+    end: string;
+  };
+  location?: {
+    venue?: string;
+    city?: string;
+  };
+  hero?: {
+    url: string;
+  };
+}
+
+interface Reservation {
+  id: string;
+  eventId: string;
+  ticketCode: string;
+  status: string;
+  quantity: number;
+  createdAt: string;
+}
 
 export default function ProfilePage() {
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
-  const [reservations] = useState(mockReservations);
-  const [isLoadingOrders] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const hasScrolled = useScrollDetection(150);
+
+  // Fetch user's reservations
+  const { data: reservationsData, loading: loadingReservations } = useQuery(GET_MY_RESERVATIONS);
+  
+  // Fetch all events to match with reservations
+  const { data: eventsData, loading: loadingEvents } = useQuery(GET_EVENTS);
 
   useEffect(() => {
     // Small delay to check auth state
@@ -146,6 +64,37 @@ export default function ProfilePage() {
     }, 100);
     return () => clearTimeout(timer);
   }, [isAuthenticated, router]);
+
+  // Transform data to match ProfileOrders expected format
+  const transformedReservations = React.useMemo(() => {
+    if (!reservationsData?.myReservations || !eventsData?.events) return [];
+
+    const events: Event[] = Array.isArray(eventsData.events) ? eventsData.events : [];
+    const reservations: Reservation[] = Array.isArray(reservationsData.myReservations) 
+      ? reservationsData.myReservations 
+      : [];
+
+    return reservations.map((reservation) => {
+      const event = events.find((e) => e.id === reservation.eventId);
+      
+      return {
+        id: reservation.id,
+        ticketCode: reservation.ticketCode,
+        status: reservation.status as 'CONFIRMED' | 'PENDING' | 'CANCELLED' | 'USED',
+        event: {
+          id: event?.id || reservation.eventId,
+          title: event?.title || 'Event',
+          startDate: event?.dateTime?.start || new Date().toISOString(),
+          endDate: event?.dateTime?.end || new Date().toISOString(),
+          location: event?.location?.venue || event?.location?.city || 'TBD',
+          imageUrl: event?.hero?.url || '/img/event.png',
+          organizer: 'Organizer',
+        },
+        price: 'Free',
+        createdAt: reservation.createdAt,
+      };
+    });
+  }, [reservationsData, eventsData]);
 
   if (isLoading) {
     return (
@@ -172,7 +121,7 @@ export default function ProfilePage() {
       <ProfileHeader
         firstName={user.firstName}
         lastName={user.lastName}
-        ordersCount={reservations.length}
+        ordersCount={transformedReservations.length}
         likesCount={0}
         followingCount={5}
       />
@@ -185,7 +134,7 @@ export default function ProfilePage() {
             <ProfileStickyHeader
               firstName={user.firstName}
               lastName={user.lastName}
-              ordersCount={reservations.length}
+              ordersCount={transformedReservations.length}
               likesCount={0}
               followingCount={5}
               isVisible={hasScrolled}
@@ -195,8 +144,8 @@ export default function ProfilePage() {
             <section className={`flex-1 min-w-0 ${hasScrolled ? 'lg:ml-0' : ''}`}>
               <h2 className="text-xl font-bold text-gray-900 mb-6">Orders</h2>
               <ProfileOrders
-                reservations={reservations}
-                isLoading={isLoadingOrders}
+                reservations={transformedReservations}
+                isLoading={loadingReservations || loadingEvents}
               />
             </section>
           </div>

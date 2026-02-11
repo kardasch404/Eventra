@@ -130,6 +130,7 @@ const ProfileOrders: React.FC<ProfileOrdersProps> = ({
               <OrderCard
                 key={reservation.id}
                 id={reservation.id}
+                eventId={reservation.event.id}
                 ticketCode={reservation.ticketCode}
                 eventTitle={reservation.event.title}
                 eventImage={reservation.event.imageUrl}
@@ -168,6 +169,7 @@ const ProfileOrders: React.FC<ProfileOrdersProps> = ({
                   <OrderCard
                     key={reservation.id}
                     id={reservation.id}
+                    eventId={reservation.event.id}
                     ticketCode={reservation.ticketCode}
                     eventTitle={reservation.event.title}
                     eventImage={reservation.event.imageUrl}

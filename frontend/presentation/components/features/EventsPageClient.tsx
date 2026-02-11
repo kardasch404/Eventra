@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SaveEventButton } from './SaveEventButton';
@@ -54,6 +55,14 @@ function getDayNum(dateString: string | null | undefined) {
 export function EventsPageClient({ events, total, totalPages, currentPage }: EventsPageClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const searchParams = useSearchParams();
+
+  // Build URL with preserved search params
+  const buildPageUrl = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', page.toString());
+    return `/events?${params.toString()}`;
+  };
 
   const handleEventClick = (e: React.MouseEvent, event: Event) => {
     // Check if click is on save button or its children
@@ -183,12 +192,6 @@ export function EventsPageClient({ events, total, totalPages, currentPage }: Eve
               </svg>
               <h3 className="mt-4 text-lg font-medium text-gray-900">No events found</h3>
               <p className="mt-2 text-gray-500">Try adjusting your search or filters to find events.</p>
-              <Link 
-                href="/events"
-                className="mt-6 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600"
-              >
-                Clear filters
-              </Link>
             </div>
           )}
 
@@ -197,7 +200,7 @@ export function EventsPageClient({ events, total, totalPages, currentPage }: Eve
             <div className="mt-8 flex items-center justify-center gap-2">
               {currentPage > 1 && (
                 <Link
-                  href={`/events?page=${currentPage - 1}`}
+                  href={buildPageUrl(currentPage - 1)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Previous
@@ -208,7 +211,7 @@ export function EventsPageClient({ events, total, totalPages, currentPage }: Eve
               </span>
               {currentPage < totalPages && (
                 <Link
-                  href={`/events?page=${currentPage + 1}`}
+                  href={buildPageUrl(currentPage + 1)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Next

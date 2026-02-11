@@ -15,9 +15,9 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   const client = getServerClient();
   const params = await searchParams;
   const page = parseInt(params.page || '1');
-  const limit = 20;
+  const limit = 7; // Events per page
 
-  // Fetch all published events
+  // Fetch all published events (with high limit to get all events)
   const { data } = await client.query({
     query: GET_EVENTS,
     variables: {
@@ -25,6 +25,8 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         category: params.category,
         type: params.type,
         status: 'PUBLISHED',
+        limit: 1000, // Fetch up to 1000 events to ensure we get all
+        page: 1,
       },
     },
   });
@@ -32,9 +34,30 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   // Get all events from GraphQL response
   let allEvents = (data?.events as any)?.events || [];
   
-  // Smart search: filter by search term OR city (matches event name, description, or location)
-  if (params.search || params.city) {
-    const searchTerm = (params.search || params.city || '').trim().toLowerCase();
+  console.log('=== EVENTS PAGE DEBUG ===');
+  console.log('Total events from GraphQL:', allEvents.length);
+  console.log('URL Params:', { city: params.city, category: params.category, search: params.search });
+  console.log('All unique cities in events:', [...new Set(allEvents.map((e: any) => e.location?.city))]);
+  
+  // Filter by city if specified (case-insensitive match)
+  if (params.city) {
+    const cityFilter = params.city.trim().toLowerCase();
+    console.log('Filtering by city:', cityFilter);
+    const beforeFilter = allEvents.length;
+    allEvents = allEvents.filter((event: any) => {
+      const eventCity = event.location?.city?.toLowerCase();
+      const matches = eventCity === cityFilter;
+      if (!matches && beforeFilter < 5) {
+        console.log(`Event city "${eventCity}" does not match filter "${cityFilter}"`);
+      }
+      return matches;
+    });
+    console.log('Events after city filter:', allEvents.length);
+  }
+  
+  // Smart search: filter by search term (matches event name, description, or location)
+  if (params.search) {
+    const searchTerm = params.search.trim().toLowerCase();
     
     allEvents = allEvents.filter((event: { 
       title?: string; 
@@ -60,9 +83,14 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
     });
   }
 
-  const events = allEvents;
-  const total = events.length;
+  // Calculate pagination
+  const total = allEvents.length;
   const totalPages = Math.ceil(total / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  
+  // Slice events for current page
+  const events = allEvents.slice(startIndex, endIndex);
 
   return (
     <>

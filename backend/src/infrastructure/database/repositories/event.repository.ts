@@ -47,7 +47,7 @@ export class EventRepository implements IEventRepository {
 
     if (filters.status) query.status = filters.status;
     if (filters.organizerId) query.organizerId = filters.organizerId;
-    if (filters.category) query.category = filters.category;
+    if (filters.category) query.category = { $regex: new RegExp(`^${filters.category}$`, 'i') };
     if (filters.type) query.type = filters.type;
     if (filters.search) {
       query.$or = [
