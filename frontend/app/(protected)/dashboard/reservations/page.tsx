@@ -37,10 +37,10 @@ export default function MyReservationsPage() {
       <h1 className="text-3xl font-bold mb-6">My Reservations</h1>
 
       {reservations.length === 0 ? (
-        <p className="text-gray-600">You don't have any reservations yet.</p>
+      <p className="text-gray-600">You don&apos;t have any reservations yet.</p>
       ) : (
         <div className="space-y-4">
-          {reservations.map((reservation: any) => (
+          {reservations.map((reservation: { id: string; eventId: string; userId: string; quantity: number; ticketCode: string; status: string }) => (
             <ReservationCard
               key={reservation.id}
               reservation={reservation}
