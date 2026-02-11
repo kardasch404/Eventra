@@ -5,6 +5,20 @@ import { useMutation } from '@apollo/client/react';
 import { REGISTER } from '@/infrastructure/graphql/mutations';
 import { useRouter } from 'next/navigation';
 
+interface RegisterResponse {
+  register: {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+      id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      roles: string[];
+    };
+  };
+}
+
 export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -16,7 +30,7 @@ export default function RegisterPage() {
     confirmPassword: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [register, { loading }] = useMutation(REGISTER);
+  const [register, { loading }] = useMutation<RegisterResponse>(REGISTER);
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
