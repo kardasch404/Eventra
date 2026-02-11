@@ -61,7 +61,7 @@ export default function RegisterPage() {
         },
       });
       
-      if (data?.register) {
+      if (data?.register as any) {
         // Registration successful - redirect to login
         router.push('/login?registered=true');
       }
