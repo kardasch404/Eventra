@@ -4,12 +4,11 @@ export const CREATE_RESERVATION = gql`
   mutation CreateReservation($input: CreateReservationInput!) {
     createReservation(input: $input) {
       id
+      eventId
       ticketCode
       status
-      event {
-        id
-        title
-      }
+      quantity
+      createdAt
     }
   }
 `;

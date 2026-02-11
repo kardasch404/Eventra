@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useAppSelector } from '@/shared/store/hooks';
+import { useAppSelector, useAppDispatch } from '@/shared/store/hooks';
+import { logout } from '@/shared/store/slices/auth.slice';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { AuthService } from '@/infrastructure/services/auth-cookie.service';
 
 // SVG Icons
 const SearchIcon = () => (
@@ -70,12 +72,20 @@ const EventraLogo = () => (
 
 export function Navbar() {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('Your Location');
   const userMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const handleLogout = () => {
+    AuthService.clearTokens();
+    dispatch(logout());
+    setUserMenuOpen(false);
+    router.push('/');
+  };
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -182,7 +192,7 @@ export function Navbar() {
 
             {/* Tickets */}
             <Link
-              href="/reservations"
+              href="/account/tickets"
               className="flex items-center gap-1.5 px-3 py-2 text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors"
             >
               <TicketIcon />
@@ -211,29 +221,24 @@ export function Navbar() {
                       </div>
                       <Link href="/profile" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
                         <UserIcon />
-                        Account Settings
+                        My Profile
                       </Link>
-                      <Link href="/reservations" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
+                      <Link href="/account/tickets" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
                         <TicketIcon />
                         My Tickets
                       </Link>
-                      <Link href="/favorites" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
-                        <HeartIcon />
-                        Liked Events
-                      </Link>
-                      <Link href="/admin" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-                        </svg>
-                        Manage Events
-                      </Link>
+                      {user?.roles?.includes('admin') && (
+                        <Link href="/admin" className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm">
+                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                          </svg>
+                          Admin Panel
+                        </Link>
+                      )}
                       <hr className="my-2" />
                       <button 
                         className="flex items-center gap-3 w-full px-4 py-2.5 text-gray-700 hover:bg-gray-50 text-sm text-left"
-                        onClick={() => {
-                          // Handle logout
-                          setUserMenuOpen(false);
-                        }}
+                        onClick={handleLogout}
                       >
                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -334,7 +339,7 @@ export function Navbar() {
             </Link>
 
             <Link 
-              href="/reservations" 
+              href="/account/tickets" 
               className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -356,22 +361,24 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <UserIcon />
-                  Account Settings
+                  My Profile
                 </Link>
-                <Link 
-                  href="/admin" 
-                  className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-                  </svg>
-                  Manage Events
-                </Link>
+                {user?.roles?.includes('admin') && (
+                  <Link 
+                    href="/admin" 
+                    className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                    Admin Panel
+                  </Link>
+                )}
                 <button 
                   className="flex items-center gap-3 w-full px-3 py-3 text-red-600 hover:bg-red-50 rounded-lg font-medium text-left"
                   onClick={() => {
-                    // Handle logout
+                    handleLogout();
                     setMobileMenuOpen(false);
                   }}
                 >

@@ -48,6 +48,15 @@ export class EventResolver {
       { page, limit },
     );
 
+    // Debug logging
+    if (result.data.length > 0) {
+      const firstEvent = result.data[0];
+      console.log('\n=== RESOLVER DEBUG ===');
+      console.log('First event location:', firstEvent.location);
+      console.log('Location keys:', firstEvent.location ? Object.keys(firstEvent.location) : 'null');
+      console.log('City value:', firstEvent.location?.city);
+    }
+
     return {
       events: result.data.map(this.mapEventToGraphQL),
       total: result.total,
