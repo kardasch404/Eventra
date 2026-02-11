@@ -7,12 +7,16 @@ import { UPDATE_EVENT } from '@/infrastructure/graphql/mutations';
 import { GET_EVENT, GET_ALL_EVENTS } from '@/infrastructure/graphql/queries';
 import Link from 'next/link';
 
+interface EventData {
+  event: any; // You can define a more specific type if needed
+}
+
 export default function EditEventPage() {
   const router = useRouter();
   const params = useParams();
   const eventId = params.id as string;
 
-  const { data, loading: queryLoading, error: queryError } = useQuery(GET_EVENT, {
+  const { data, loading: queryLoading, error: queryError } = useQuery<EventData>(GET_EVENT, {
     variables: { id: eventId },
     skip: !eventId,
   });

@@ -30,6 +30,42 @@ services:
     networks:
       - eventra-network
 
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: eventra-backend
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - '4000:4000'
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - eventra-network
+    volumes:
+      - ../src:/app/src
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: eventra-frontend
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:4000/graphql
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+    networks:
+      - eventra-network
+    volumes:
+      - ../../frontend/app:/app/app
+      - ../../frontend/presentation:/app/presentation
+
   mongo-express:
     image: mongo-express:latest
     container_name: eventra-mongo-express
