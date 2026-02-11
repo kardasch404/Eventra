@@ -19,8 +19,12 @@ interface Reservation {
   createdAt: string;
 }
 
+interface MyReservationsData {
+  myReservations: Reservation[];
+}
+
 export default function MyTicketsPage() {
-  const { data, loading, error, refetch } = useQuery(GET_MY_RESERVATIONS);
+  const { data, loading, error, refetch } = useQuery<MyReservationsData>(GET_MY_RESERVATIONS);
   const { user } = useAppSelector((state) => state.auth);
   const searchParams = useSearchParams();
   const eventId = searchParams.get('eventId');
