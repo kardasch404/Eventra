@@ -3,7 +3,7 @@
 import { useQuery, useMutation } from '@apollo/client/react';
 import { GET_MY_RESERVATIONS } from '@/infrastructure/graphql/queries/reservation.queries';
 import { CANCEL_RESERVATION } from '@/infrastructure/graphql/mutations/reservation.mutations';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import QRCode from 'qrcode';
 import Image from 'next/image';
 import { useAppSelector } from '@/shared/store/hooks';
@@ -23,7 +23,7 @@ interface MyReservationsData {
   myReservations: Reservation[];
 }
 
-export default function MyTicketsPage() {
+function MyTicketsContent() {
   const { data, loading, error, refetch } = useQuery<MyReservationsData>(GET_MY_RESERVATIONS);
   const { user } = useAppSelector((state) => state.auth);
   const searchParams = useSearchParams();
@@ -497,5 +497,20 @@ function TicketCard({ reservation, user, onCancel }: { reservation: Reservation;
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MyTicketsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your tickets...</p>
+        </div>
+      </div>
+    }>
+      <MyTicketsContent />
+    </Suspense>
   );
 }
