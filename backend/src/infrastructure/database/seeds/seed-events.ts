@@ -9,13 +9,13 @@ import { SEED_EVENTS } from './events.seed';
 
 /**
  * Standalone event seeder script
- * 
+ *
  * Run with: npx ts-node -r tsconfig-paths/register src/infrastructure/database/seeds/seed-events.ts
  * Or: npm run seed:events (if added to package.json)
  */
 async function seedEvents() {
   console.log('🎫 Starting event seeding...\n');
-  
+
   const app = await NestFactory.createApplicationContext(AppModule);
 
   const userModel = app.get<Model<UserDocument>>(getModelToken('UserDocument'));
@@ -38,17 +38,17 @@ async function seedEvents() {
 
   for (const event of SEED_EVENTS) {
     const exists = await eventModel.findOne({ slug: event.slug });
-    
+
     if (!exists) {
       const bookedCount = Math.floor(Math.random() * Math.floor(event.capacity * 0.3));
-      
+
       await eventModel.create({
         id: uuidv7(),
         ...event,
         organizerId: adminUser.id,
         bookedCount,
       });
-      
+
       console.log(`  ✓ Created: ${event.title}`);
       console.log(`    📍 ${event.location.city} | 📅 ${event.dateTime.display}`);
       console.log(`    🎟️ Capacity: ${event.capacity} | Booked: ${bookedCount}\n`);

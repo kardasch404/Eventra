@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUserRepository, UserFilters, PaginatedUsersResult } from '@core/interfaces/user.repository.interface';
+import {
+  IUserRepository,
+  UserFilters,
+  PaginatedUsersResult,
+} from '@core/interfaces/user.repository.interface';
 import { User } from '@core/entities/user.entity';
 import { UserDocument } from '@infrastructure/database/schemas/user.schema';
 
@@ -72,11 +76,9 @@ export class UserRepository implements IUserRepository {
   }
 
   async updateRoles(id: string, roles: string[]): Promise<User | null> {
-    const doc = await this.userModel.findOneAndUpdate(
-      { id },
-      { roles, updatedAt: new Date() },
-      { new: true },
-    ).exec();
+    const doc = await this.userModel
+      .findOneAndUpdate({ id }, { roles, updatedAt: new Date() }, { new: true })
+      .exec();
     return doc ? this.toEntity(doc) : null;
   }
 
