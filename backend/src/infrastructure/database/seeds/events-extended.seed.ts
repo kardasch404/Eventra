@@ -62,7 +62,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'jazz-night-casablanca-2026',
     title: 'Casablanca Jazz Night Under the Stars',
-    summary: 'Experience an unforgettable evening of smooth jazz with international and local artists in the heart of Casablanca.',
+    summary:
+      'Experience an unforgettable evening of smooth jazz with international and local artists in the heart of Casablanca.',
     description: [
       'Join us for an enchanting night of jazz music featuring renowned international and Moroccan jazz artists.',
       'The event will take place in a stunning outdoor venue with perfect acoustics and ambiance.',
@@ -139,7 +140,7 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
       country: 'Morocco',
       city: 'Marrakech',
       venue: 'Oasiria Water Park',
-      address: 'Route de l\'Ourika, Marrakech',
+      address: "Route de l'Ourika, Marrakech",
       coordinates: { lat: 31.5725, lng: -8.0708 },
     },
     capacity: 8000,
@@ -156,7 +157,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'rooftop-party-rabat-summer-2026',
     title: 'Rabat Rooftop Summer Party',
-    summary: 'Dance the night away at Rabat\'s most exclusive rooftop venue with panoramic city views.',
+    summary:
+      "Dance the night away at Rabat's most exclusive rooftop venue with panoramic city views.",
     description: [
       'Join us for the hottest summer party in Rabat!',
       'Enjoy stunning 360-degree views of the city from our rooftop venue.',
@@ -203,7 +205,7 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'tangier-nightclub-opening-2026',
     title: 'Grand Opening: Elements Nightclub Tangier',
-    summary: 'Be part of history at the grand opening of Tangier\'s most anticipated nightclub.',
+    summary: "Be part of history at the grand opening of Tangier's most anticipated nightclub.",
     description: [
       'Elements Nightclub opens its doors for the first time!',
       'State-of-the-art sound system and lighting.',
@@ -281,7 +283,7 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
       mode: 'in_person',
       country: 'Morocco',
       city: 'Marrakech',
-      venue: 'Musée d\'Art Contemporain',
+      venue: "Musée d'Art Contemporain",
       address: 'Rue Yves Saint Laurent, Marrakech',
       coordinates: { lat: 31.6295, lng: -7.9811 },
     },
@@ -298,7 +300,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'fes-traditional-crafts-festival-2026',
     title: 'Fes Traditional Crafts & Arts Festival',
-    summary: 'Celebrate Moroccan heritage with demonstrations of traditional craftsmanship and art.',
+    summary:
+      'Celebrate Moroccan heritage with demonstrations of traditional craftsmanship and art.',
     description: [
       'Experience the rich tradition of Moroccan craftsmanship in the heart of Fes.',
       'Live demonstrations: Pottery making, leather tanning, metalwork, carpet weaving, zellige tile making.',
@@ -345,8 +348,9 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   // HOLIDAY EVENTS
   {
     slug: 'new-year-eve-gala-casablanca-2026',
-    title: 'New Year\'s Eve Gala Dinner & Celebration',
-    summary: 'Ring in 2027 in style with a luxurious gala dinner, live entertainment, and fireworks.',
+    title: "New Year's Eve Gala Dinner & Celebration",
+    summary:
+      'Ring in 2027 in style with a luxurious gala dinner, live entertainment, and fireworks.',
     description: [
       'Celebrate the arrival of 2027 at the most anticipated event of the year!',
       '5-course gourmet dinner prepared by award-winning chefs.',
@@ -395,7 +399,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'speed-dating-marrakech-young-professionals-2026',
     title: 'Speed Dating Night for Young Professionals - Marrakech',
-    summary: 'Meet potential romantic partners in a fun, relaxed speed dating event for professionals aged 25-40.',
+    summary:
+      'Meet potential romantic partners in a fun, relaxed speed dating event for professionals aged 25-40.',
     description: [
       'Looking for love? Join our speed dating event designed for young professionals!',
       'Format: 7-minute conversations with multiple potential matches.',
@@ -444,7 +449,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'photography-workshop-essaouira-2026',
     title: 'Landscape Photography Workshop - Essaouira Coastline',
-    summary: 'Learn professional landscape photography techniques while capturing the beauty of Essaouira.',
+    summary:
+      'Learn professional landscape photography techniques while capturing the beauty of Essaouira.',
     description: [
       'Join professional photographer Hassan Alami for a full-day photography workshop.',
       'Learn advanced techniques: Composition, lighting, long exposure, HDR.',
@@ -492,11 +498,12 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'board-game-night-rabat-2026',
     title: 'Board Game Night - Strategy & Fun',
-    summary: 'Join fellow board game enthusiasts for an evening of strategy games, party games, and fun!',
+    summary:
+      'Join fellow board game enthusiasts for an evening of strategy games, party games, and fun!',
     description: [
       'Calling all board game lovers!',
       'Huge selection of games: Catan, Ticket to Ride, Pandemic, Codenames, and many more.',
-      'Beginner-friendly - we\'ll teach you any game.',
+      "Beginner-friendly - we'll teach you any game.",
       'Meet new friends who share your passion for gaming.',
       'Snacks and beverages available for purchase.',
       'Game library with 100+ titles.',
@@ -541,7 +548,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'tech-startup-pitch-competition-casablanca-2026',
     title: 'Tech Startup Pitch Competition Casablanca',
-    summary: 'Watch innovative startups pitch their ideas to investors and compete for funding and prizes.',
+    summary:
+      'Watch innovative startups pitch their ideas to investors and compete for funding and prizes.',
     description: [
       'The biggest startup pitch competition in Morocco!',
       '15 selected startups will pitch to a panel of VCs and angel investors.',
@@ -591,7 +599,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'marrakech-street-food-festival-2026',
     title: 'Marrakech Street Food Festival',
-    summary: 'Taste the best street food from Morocco and around the world at this massive food festival.',
+    summary:
+      'Taste the best street food from Morocco and around the world at this massive food festival.',
     description: [
       'The ultimate street food experience in Marrakech!',
       '50+ food vendors from Morocco and international cuisines.',
@@ -640,7 +649,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'wine-tasting-meknes-vineyards-2026',
     title: 'Moroccan Wine Tasting Tour - Meknes Vineyards',
-    summary: 'Discover the excellence of Moroccan wines with a guided tasting tour of Meknes region vineyards.',
+    summary:
+      'Discover the excellence of Moroccan wines with a guided tasting tour of Meknes region vineyards.',
     description: [
       'Experience the rich winemaking tradition of Morocco in Meknes.',
       'Visit 3 premium wineries in the region.',
@@ -690,7 +700,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'casablanca-marathon-2026',
     title: 'Casablanca International Marathon 2026',
-    summary: 'Join thousands of runners in the annual Casablanca Marathon - Full, Half, and 10K options.',
+    summary:
+      'Join thousands of runners in the annual Casablanca Marathon - Full, Half, and 10K options.',
     description: [
       'The biggest running event in Morocco returns!',
       'Race options: Full Marathon (42.2K), Half Marathon (21.1K), 10K Fun Run.',
@@ -739,7 +750,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'surfing-championship-agadir-2026',
     title: 'Morocco Surf Pro Championship - Agadir',
-    summary: 'Watch the best surfers compete in Morocco\'s premier surfing championship at Agadir Beach.',
+    summary:
+      "Watch the best surfers compete in Morocco's premier surfing championship at Agadir Beach.",
     description: [
       'The Morocco Surf Pro returns to Agadir!',
       'Top national and international surfers competing.',
@@ -789,7 +801,8 @@ export const EXTENDED_SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'meditation-retreat-atlas-mountains-2026',
     title: 'Silent Meditation Retreat - Atlas Mountains',
-    summary: 'Disconnect from the world and reconnect with yourself in a 5-day silent meditation retreat.',
+    summary:
+      'Disconnect from the world and reconnect with yourself in a 5-day silent meditation retreat.',
     description: [
       'A transformative 5-day silent meditation retreat in the peaceful Atlas Mountains.',
       'Daily schedule: Morning meditation, yoga, mindful walking, evening reflection.',

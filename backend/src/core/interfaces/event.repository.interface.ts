@@ -28,7 +28,10 @@ export interface IEventRepository {
   findById(id: string): Promise<Event | null>;
   findBySlug(slug: string): Promise<Event | null>;
   findAll(filters?: { status?: EventStatus; organizerId?: string }): Promise<Event[]>;
-  findWithFilters(filters: EventFilters, pagination: PaginationOptions): Promise<PaginatedResult<Event>>;
+  findWithFilters(
+    filters: EventFilters,
+    pagination: PaginationOptions,
+  ): Promise<PaginatedResult<Event>>;
   update(id: string, data: Partial<Event>): Promise<Event | null>;
   delete(id: string): Promise<boolean>;
   incrementBookedCount(id: string, quantity: number): Promise<void>;

@@ -19,7 +19,10 @@ export interface IUserRepository {
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
   findAll(): Promise<User[]>;
-  findWithFilters(filters: UserFilters, pagination: { page: number; limit: number }): Promise<PaginatedUsersResult>;
+  findWithFilters(
+    filters: UserFilters,
+    pagination: { page: number; limit: number },
+  ): Promise<PaginatedUsersResult>;
   update(id: string, data: Partial<User>): Promise<User | null>;
   updateRoles(id: string, roles: string[]): Promise<User | null>;
   delete(id: string): Promise<boolean>;
