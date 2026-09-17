@@ -9,7 +9,7 @@ import { UserDocument } from '../schemas/user.schema';
  */
 async function updateAdminRole() {
   console.log('🔧 Updating admin user role...\n');
-  
+
   const app = await NestFactory.createApplicationContext(AppModule);
   const userModel = app.get<Model<UserDocument>>(getModelToken('UserDocument'));
 
@@ -17,7 +17,7 @@ async function updateAdminRole() {
   const result = await userModel.findOneAndUpdate(
     { email: adminEmail },
     { roles: ['admin', 'organizer'] },
-    { new: true }
+    { new: true },
   );
 
   if (result) {

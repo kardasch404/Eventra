@@ -3,7 +3,12 @@ import { UseGuards, Inject } from '@nestjs/common';
 import { RegisterUseCase } from '@application/use-cases/auth/register.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
 import { RefreshTokenUseCase } from '@application/use-cases/auth/refresh-token.use-case';
-import { AuthResponseType, UserType, PaginatedUsersType, AdminStatsType } from '@presentation/graphql/types/auth.type';
+import {
+  AuthResponseType,
+  UserType,
+  PaginatedUsersType,
+  AdminStatsType,
+} from '@presentation/graphql/types/auth.type';
 import {
   RegisterInput,
   LoginInput,
@@ -27,7 +32,8 @@ export class AuthResolver {
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     @Inject('IUserRepository') private readonly userRepository: IUserRepository,
     @Inject('IEventRepository') private readonly eventRepository: IEventRepository,
-    @Inject('IReservationRepository') private readonly reservationRepository: IReservationRepository,
+    @Inject('IReservationRepository')
+    private readonly reservationRepository: IReservationRepository,
   ) {}
 
   @Mutation(() => AuthResponseType)
@@ -49,7 +55,7 @@ export class AuthResolver {
   @UseGuards(GqlAuthGuard)
   async me(@CurrentUser() tokenPayload: TokenPayload): Promise<UserType> {
     const user = await this.userRepository.findById(tokenPayload.sub);
-    
+
     if (!user) {
       return {
         id: tokenPayload.sub,
@@ -84,10 +90,7 @@ export class AuthResolver {
     @Args('search', { type: () => String, nullable: true }) search?: string,
     @Args('role', { type: () => String, nullable: true }) role?: string,
   ): Promise<PaginatedUsersType> {
-    const result = await this.userRepository.findWithFilters(
-      { search, role },
-      { page, limit },
-    );
+    const result = await this.userRepository.findWithFilters({ search, role }, { page, limit });
 
     return {
       users: result.data.map((user) => ({
@@ -171,8 +174,12 @@ export class AuthResolver {
     ]);
 
     const publishedEvents = events.filter((e) => e.status === EventStatus.PUBLISHED).length;
-    const confirmedReservations = reservations.filter((r) => r.status === ReservationStatus.CONFIRMED).length;
-    const pendingReservations = reservations.filter((r) => r.status === ReservationStatus.PENDING).length;
+    const confirmedReservations = reservations.filter(
+      (r) => r.status === ReservationStatus.CONFIRMED,
+    ).length;
+    const pendingReservations = reservations.filter(
+      (r) => r.status === ReservationStatus.PENDING,
+    ).length;
 
     return {
       totalUsers: users,
