@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const publicRoutes = ['/', '/login', '/register', '/events'];
+const publicRoutes = ['/', '/login', '/register', '/events', '/graphql'];
 const authRoutes = ['/login', '/register'];
 
 export function middleware(request: NextRequest) {

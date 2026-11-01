@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Navbar, Footer } from '@/presentation/components/layouts';
 import { useQuery } from '@apollo/client/react';
 import { GET_EVENTS } from '@/infrastructure/graphql/queries';
+import { useAuth } from '@/presentation/hooks/useAuth';
 
 // ============================================
 // EVENTBRITE-STYLE CATEGORY SVG ICONS
@@ -215,10 +216,12 @@ const topDestinations = [
 ];
 
 export default function HomePage() {
+  const { isAuthenticated, user } = useAuth();
   const { data, loading } = useQuery(GET_EVENTS, {
     variables: {
       filters: { status: 'PUBLISHED' },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const events = data?.events?.events?.slice(0, 8) || [];
@@ -397,15 +400,17 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">No events available yet</h3>
                 <p className="text-gray-600 mb-8 max-w-md mx-auto">Be the first to create an amazing event in your area and start building your community!</p>
-                <Link 
-                  href="/admin/events/create" 
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors shadow-lg hover:shadow-xl"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/>
-                  </svg>
-                  Create Your First Event
-                </Link>
+                {isAuthenticated && (user?.roles?.includes('admin') || user?.roles?.includes('organizer')) && (
+                  <Link 
+                    href="/admin/events/create" 
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors shadow-lg hover:shadow-xl"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Create Your First Event
+                  </Link>
+                )}
               </div>
             )}
           </div>

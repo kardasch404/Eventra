@@ -1,0 +1,6 @@
+backend/node_modules
+backend/dist
+frontend/
+docs/
+.git
+.github

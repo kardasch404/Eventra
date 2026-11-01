@@ -17,19 +17,25 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   const page = parseInt(params.page || '1');
   const limit = 7; // Events per page
 
-  // Fetch all published events (with high limit to get all events)
-  const { data } = await client.query({
-    query: GET_EVENTS,
-    variables: {
-      filters: {
-        category: params.category,
-        type: params.type,
-        status: 'PUBLISHED',
-        limit: 1000, // Fetch up to 1000 events to ensure we get all
-        page: 1,
+  let data;
+  try {
+    const response = await client.query({
+      query: GET_EVENTS,
+      variables: {
+        filters: {
+          category: params.category,
+          type: params.type,
+          status: 'PUBLISHED',
+          limit: 1000, // Fetch up to 1000 events to ensure we get all
+          page: 1,
+        },
       },
-    },
-  });
+    });
+    data = response.data;
+  } catch (error) {
+    console.error('=== SSR GRAPHQL ERROR ===', error);
+    data = { events: { events: [] } };
+  }
 
   // Get all events from GraphQL response
   let allEvents = (data?.events as any)?.events || [];

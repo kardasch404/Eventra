@@ -47,17 +47,18 @@ async function seed() {
   const existingAdmin = await userModel.findOne({ email: adminEmail });
 
   if (!existingAdmin) {
-    const hashedPassword = await Password.fromPlainText('eventra');
+    const hashedPassword = await Password.fromPlainText('eventra123');
     const adminUser = await userModel.create({
       id: uuidv7(),
       email: adminEmail,
       password: hashedPassword.getValue(),
       firstName: 'admin',
       lastName: 'admin',
+      roles: ['admin', 'organizer'],
       isEmailVerified: true,
     });
     console.log(`  ✓ Created admin user: ${adminEmail}`);
-    console.log(`    - Password: eventra`);
+    console.log(`    - Password: eventra123`);
     console.log(`    - ID: ${adminUser.id}`);
 
     // Seed Events (after admin user is created so we have an organizer ID)

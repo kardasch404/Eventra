@@ -1,14 +1,8 @@
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:7.0
     container_name: eventra-mongodb
     restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin_pass
-      MONGO_INITDB_DATABASE: eventra
     ports:
       - '27018:27017'
     volumes:
@@ -20,11 +14,9 @@ services:
     image: redis:7-alpine
     container_name: eventra-redis
     restart: unless-stopped
-    env_file:
-      - ../.env
-    command: redis-server --requirepass "${REDIS_PASSWORD:-redis_pass}"
+    command: redis-server --requirepass "redis_pass"
     ports:
-      - '6380:6379'
+      - '6379:6379'
     volumes:
       - redis_data:/data
     networks:
@@ -32,12 +24,12 @@ services:
 
   backend:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: ../../..
+      dockerfile: infra/docker/eventra/Dockerfile
     container_name: eventra-backend
     restart: unless-stopped
     env_file:
-      - ../.env
+      - ../../../backend/.env
     ports:
       - '4000:4000'
     depends_on:
@@ -45,39 +37,30 @@ services:
       - redis
     networks:
       - eventra-network
-    volumes:
-      - ../src:/app/src
 
   frontend:
     build:
-      context: ../../frontend
+      context: ../../../frontend
       dockerfile: Dockerfile
     container_name: eventra-frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:4000/graphql
+      - NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
     ports:
-      - '3000:3000'
+      - '3001:3000'
     depends_on:
       - backend
     networks:
       - eventra-network
-    volumes:
-      - ../../frontend/app:/app/app
-      - ../../frontend/presentation:/app/presentation
 
   mongo-express:
     image: mongo-express:latest
     container_name: eventra-mongo-express
     restart: unless-stopped
-    env_file:
-      - ../.env
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/
-      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER}
-      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin_pass
     ports:
       - '8081:8081'
     depends_on:

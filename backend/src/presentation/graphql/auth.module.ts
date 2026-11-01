@@ -16,6 +16,8 @@ import { EventSchema, EventDocument } from '@infrastructure/database/schemas/eve
 import { EventRepository } from '@infrastructure/database/repositories/event.repository';
 import { ReservationSchema, ReservationDocument } from '@infrastructure/database/schemas/reservation.schema';
 import { ReservationRepository } from '@infrastructure/database/repositories/reservation.repository';
+import { RoleSchema, RoleDocument } from '@infrastructure/database/schemas/role.schema';
+import { PermissionSchema, PermissionDocument } from '@infrastructure/database/schemas/permission.schema';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { ReservationRepository } from '@infrastructure/database/repositories/res
       { name: UserDocument.name, schema: UserSchema },
       { name: EventDocument.name, schema: EventSchema },
       { name: ReservationDocument.name, schema: ReservationSchema },
+      { name: RoleDocument.name, schema: RoleSchema },
+      { name: PermissionDocument.name, schema: PermissionSchema },
     ]),
   ],
   providers: [
