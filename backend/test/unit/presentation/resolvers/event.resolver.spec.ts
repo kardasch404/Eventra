@@ -204,7 +204,7 @@ describe('EventResolver', () => {
 
       mockCreateEventUseCase.execute.mockResolvedValue(mockEvent);
 
-      const result = await resolver.createEvent(input, { userId: 'user-1' });
+      const result = await resolver.createEvent(input, { sub: 'user-1' });
 
       expect(result.title).toBe('New Event');
       expect(mockCreateEventUseCase.execute).toHaveBeenCalled();
@@ -236,7 +236,7 @@ describe('EventResolver', () => {
 
       mockPublishEventUseCase.execute.mockResolvedValue(mockEvent);
 
-      const result = await resolver.publishEvent('event-1', { userId: 'user-1' });
+      const result = await resolver.publishEvent('event-1', { sub: 'user-1' });
 
       expect(result.status).toBe(EventStatus.PUBLISHED);
     });
@@ -267,7 +267,7 @@ describe('EventResolver', () => {
 
       mockCancelEventUseCase.execute.mockResolvedValue(mockEvent);
 
-      const result = await resolver.cancelEvent('event-1', { userId: 'user-1' });
+      const result = await resolver.cancelEvent('event-1', { sub: 'user-1' });
 
       expect(result.status).toBe(EventStatus.CANCELED);
     });

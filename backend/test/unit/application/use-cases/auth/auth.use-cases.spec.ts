@@ -17,6 +17,12 @@ describe('Auth Use Cases', () => {
     findByEmail: jest.fn(),
     findById: jest.fn(),
     create: jest.fn(),
+    findAll: jest.fn(),
+    findWithFilters: jest.fn(),
+    updateRoles: jest.fn(),
+    count: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
   };
 
   const mockUuidService = {
@@ -73,6 +79,7 @@ describe('Auth Use Cases', () => {
           email: dto.email,
           firstName: dto.firstName,
           lastName: dto.lastName,
+          roles: ['participant'],
         },
       });
       expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(dto.email);
@@ -119,6 +126,7 @@ describe('Auth Use Cases', () => {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          roles: ['participant'],
         },
       });
     });
@@ -172,6 +180,7 @@ describe('Auth Use Cases', () => {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          roles: ['participant'],
         },
       });
     });

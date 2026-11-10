@@ -22,6 +22,7 @@ describe('Event Use Cases', () => {
       findById: jest.fn(),
       findBySlug: jest.fn(),
       findAll: jest.fn(),
+      findWithFilters: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       incrementBookedCount: jest.fn(),

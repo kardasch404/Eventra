@@ -14,10 +14,16 @@ import { UserSchema, UserDocument } from '@infrastructure/database/schemas/user.
 import { UserRepository } from '@infrastructure/database/repositories/user.repository';
 import { EventSchema, EventDocument } from '@infrastructure/database/schemas/event.schema';
 import { EventRepository } from '@infrastructure/database/repositories/event.repository';
-import { ReservationSchema, ReservationDocument } from '@infrastructure/database/schemas/reservation.schema';
+import {
+  ReservationSchema,
+  ReservationDocument,
+} from '@infrastructure/database/schemas/reservation.schema';
 import { ReservationRepository } from '@infrastructure/database/repositories/reservation.repository';
 import { RoleSchema, RoleDocument } from '@infrastructure/database/schemas/role.schema';
-import { PermissionSchema, PermissionDocument } from '@infrastructure/database/schemas/permission.schema';
+import {
+  PermissionSchema,
+  PermissionDocument,
+} from '@infrastructure/database/schemas/permission.schema';
 
 @Module({
   imports: [

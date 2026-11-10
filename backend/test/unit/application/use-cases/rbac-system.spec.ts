@@ -41,6 +41,10 @@ describe('RBAC System', () => {
       create: jest.fn(),
       findById: jest.fn(),
       findByEmail: jest.fn(),
+      findAll: jest.fn(),
+      findWithFilters: jest.fn(),
+      updateRoles: jest.fn(),
+      count: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     };

@@ -22,7 +22,7 @@ describe('AdminGuard', () => {
     const mockGqlContext = {
       getContext: jest.fn().mockReturnValue({
         req: {
-          user: { userId: 'user-1' },
+          user: { userId: 'user-1', roles: ['admin'] },
         },
       }),
     };

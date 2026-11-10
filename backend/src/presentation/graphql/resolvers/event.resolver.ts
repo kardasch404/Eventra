@@ -53,7 +53,10 @@ export class EventResolver {
       const firstEvent = result.data[0];
       console.log('\n=== RESOLVER DEBUG ===');
       console.log('First event location:', firstEvent.location);
-      console.log('Location keys:', firstEvent.location ? Object.keys(firstEvent.location) : 'null');
+      console.log(
+        'Location keys:',
+        firstEvent.location ? Object.keys(firstEvent.location) : 'null',
+      );
       console.log('City value:', firstEvent.location?.city);
     }
 

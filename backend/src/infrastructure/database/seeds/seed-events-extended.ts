@@ -9,12 +9,12 @@ import { EXTENDED_SEED_EVENTS } from './events-extended.seed';
 
 /**
  * Extended event seeder script for diverse categories and cities
- * 
+ *
  * Run with: npx ts-node -r tsconfig-paths/register src/infrastructure/database/seeds/seed-events-extended.ts
  */
 async function seedExtendedEvents() {
   console.log('🎫 Starting extended event seeding...\n');
-  
+
   const app = await NestFactory.createApplicationContext(AppModule);
 
   const userModel = app.get<Model<UserDocument>>(getModelToken('UserDocument'));
@@ -37,17 +37,17 @@ async function seedExtendedEvents() {
 
   for (const event of EXTENDED_SEED_EVENTS) {
     const exists = await eventModel.findOne({ slug: event.slug });
-    
+
     if (!exists) {
       const bookedCount = Math.floor(Math.random() * Math.floor(event.capacity * 0.3));
-      
+
       await eventModel.create({
         id: uuidv7(),
         ...event,
         organizerId: adminUser.id,
         bookedCount,
       });
-      
+
       created++;
       console.log(`  ✓ Created: ${event.title}`);
       console.log(`    📍 ${event.location.city} | 📅 ${event.dateTime.display}`);

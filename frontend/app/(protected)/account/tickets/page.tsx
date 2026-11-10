@@ -6,6 +6,7 @@ import { CANCEL_RESERVATION } from '@/infrastructure/graphql/mutations/reservati
 import { useEffect, useRef, useState, Suspense } from 'react';
 import QRCode from 'qrcode';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAppSelector } from '@/shared/store/hooks';
 import { useSearchParams } from 'next/navigation';
 import jsPDF from 'jspdf';
@@ -45,9 +46,9 @@ function MyTicketsContent() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-sm p-8 max-w-md">
           <p className="text-red-600 mb-4">Error loading tickets: {error.message}</p>
-          <a href="/events" className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+          <Link href="/events" className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
             Browse Events
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -69,12 +70,12 @@ function MyTicketsContent() {
               {eventId ? 'Event Tickets' : 'My Tickets'}
             </h1>
             {eventId && (
-              <a 
+              <Link 
                 href="/account/tickets"
                 className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
               >
                 View all tickets
-              </a>
+              </Link>
             )}
           </div>
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
@@ -86,9 +87,9 @@ function MyTicketsContent() {
                 ? "You don't have any tickets for this event." 
                 : "You don't have any tickets yet."}
             </p>
-            <a href="/events" className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium">
+            <Link href="/events" className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium">
               Browse Events
-            </a>
+            </Link>
           </div>
         </div>
       </div>

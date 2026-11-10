@@ -12,9 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "jest.config.js",
+    "jest.setup.js",
   ]),
   {
     rules: {
+      "@typescript-eslint/no-require-imports": "off",
       // next/image warnings — keep as warn, not error
       "@next/next/no-img-element": "warn",
       // false positive: next.js server components (async functions) use try/catch with JSX

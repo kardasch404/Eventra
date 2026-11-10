@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, Suspense } from 'react';
+import Link from 'next/link';
 import { useMutation } from '@apollo/client/react';
 import { LOGIN } from '@/infrastructure/graphql/mutations';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -75,14 +76,14 @@ function LoginForm() {
       <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <a href="/" className="inline-block mb-6">
+            <Link href="/" className="inline-block mb-6">
               <svg className="w-32 h-8" viewBox="0 0 200 40" fill="#F05537">
                 <text x="0" y="30" fontSize="32" fontWeight="bold" fill="#F05537">Eventra</text>
               </svg>
-            </a>
+            </Link>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Log in</h1>
             <div className="text-sm">
-              <a href="/register" className="text-blue-600 hover:text-blue-700 font-semibold">Sign up</a>
+              <Link href="/register" className="text-blue-600 hover:text-blue-700 font-semibold">Sign up</Link>
             </div>
           </div>
 

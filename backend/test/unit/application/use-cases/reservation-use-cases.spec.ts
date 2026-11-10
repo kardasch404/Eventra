@@ -30,6 +30,7 @@ describe('Reservation Use Cases', () => {
       findByTicketCode: jest.fn(),
       findByUserId: jest.fn(),
       findByEventId: jest.fn(),
+      findAll: jest.fn(),
       update: jest.fn(),
       updateStatus: jest.fn(),
       delete: jest.fn(),
@@ -51,6 +52,10 @@ describe('Reservation Use Cases', () => {
       create: jest.fn(),
       findById: jest.fn(),
       findByEmail: jest.fn(),
+      findAll: jest.fn(),
+      findWithFilters: jest.fn(),
+      updateRoles: jest.fn(),
+      count: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     };

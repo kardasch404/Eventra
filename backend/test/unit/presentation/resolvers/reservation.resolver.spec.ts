@@ -75,7 +75,7 @@ describe('ReservationResolver', () => {
 
       mockGetMyReservationsUseCase.execute.mockResolvedValue(reservations);
 
-      const result = await resolver.myReservations({ userId: 'user-1' });
+      const result = await resolver.myReservations({ sub: 'user-1' });
 
       expect(result).toHaveLength(1);
       expect(result[0].userId).toBe('user-1');
@@ -153,7 +153,7 @@ describe('ReservationResolver', () => {
 
       mockCreateReservationUseCase.execute.mockResolvedValue(reservation);
 
-      const result = await resolver.createReservation(input, { userId: 'user-1' });
+      const result = await resolver.createReservation(input, { sub: 'user-1' });
 
       expect(result.status).toBe(ReservationStatus.PENDING);
       expect(mockCreateReservationUseCase.execute).toHaveBeenCalled();
@@ -211,7 +211,7 @@ describe('ReservationResolver', () => {
 
       mockCancelReservationUseCase.execute.mockResolvedValue(reservation);
 
-      const result = await resolver.cancelReservation('res-1', { userId: 'user-1' });
+      const result = await resolver.cancelReservation('res-1', { sub: 'user-1' });
 
       expect(result.status).toBe(ReservationStatus.CANCELED);
     });

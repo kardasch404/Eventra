@@ -473,7 +473,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       { icon: '📍', text: 'In person' },
     ],
   },
-  
+
   // Event 9: Tech Meetup Fes
   {
     slug: 'tech-meetup-fes-developers',
@@ -483,8 +483,8 @@ export const SEED_EVENTS: SeedEvent[] = [
     description: [
       'Calling all developers, designers, and tech enthusiasts in Fes!',
       'Join us for an exciting meetup where we discuss the latest trends in web development and design.',
-      'This month\'s topics include: Modern React patterns and best practices, CSS frameworks comparison, Backend architecture with Node.js, UI/UX design principles.',
-      'Whether you\'re a beginner or an experienced professional, everyone is welcome!',
+      "This month's topics include: Modern React patterns and best practices, CSS frameworks comparison, Backend architecture with Node.js, UI/UX design principles.",
+      "Whether you're a beginner or an experienced professional, everyone is welcome!",
       'Bring your laptop, your questions, and your passion for technology.',
       'Light refreshments will be provided. Free admission.',
     ],
@@ -719,8 +719,7 @@ export const SEED_EVENTS: SeedEvent[] = [
   {
     slug: 'fes-cultural-arts-festival-2026',
     title: 'Fes Festival of World Sacred Music - Special Edition',
-    summary:
-      'Experience spiritual music from around the world in the historic city of Fes.',
+    summary: 'Experience spiritual music from around the world in the historic city of Fes.',
     description: [
       'The renowned Fes Festival returns with a special edition celebrating global spiritual traditions through music.',
       'Over 5 days, enjoy performances by artists from Morocco, India, Senegal, Turkey, and beyond.',
@@ -871,7 +870,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       'Free open-air concerts on multiple stages across the city.',
       'Fusion performances blending Gnaoua with jazz, rock, reggae, and more.',
       'Street performances, art exhibitions, and cultural activities throughout the medina.',
-      'One of Africa\'s largest music festivals with over 500,000 visitors expected.',
+      "One of Africa's largest music festivals with over 500,000 visitors expected.",
       'Family-friendly with activities for all ages.',
     ],
     category: 'Music & Entertainment',
@@ -913,7 +912,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     slug: 'rabat-innovation-entrepreneurship-forum-2026',
     title: 'Rabat Innovation & Entrepreneurship Forum 2026',
     summary:
-      'Connect with innovators, investors, and policymakers shaping Morocco\'s entrepreneurial ecosystem.',
+      "Connect with innovators, investors, and policymakers shaping Morocco's entrepreneurial ecosystem.",
     description: [
       'The Rabat Innovation & Entrepreneurship Forum brings together the brightest minds in Moroccan innovation.',
       'Full-day event featuring: Keynote speeches from successful entrepreneurs, panel discussions on startup challenges, pitch competition with 100,000 MAD in prizes, investor speed dating sessions, government initiatives and support programs.',
@@ -963,7 +962,7 @@ export const SEED_EVENTS: SeedEvent[] = [
     summary:
       'Discover the latest innovations in agriculture technology, sustainable farming, and agribusiness.',
     description: [
-      'The Meknes Agriculture & Technology Expo is Morocco\'s premier agri-tech event.',
+      "The Meknes Agriculture & Technology Expo is Morocco's premier agri-tech event.",
       'Explore cutting-edge solutions in: Precision agriculture and IoT sensors, sustainable farming practices, irrigation technology, agricultural drones and robotics, agribusiness management.',
       'Perfect for: Farmers, agribusiness professionals, agricultural researchers, technology providers.',
       'Live demonstrations of farming equipment and technology.',
@@ -1018,7 +1017,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       'Highlighting sustainable fashion and traditional Moroccan craftsmanship.',
       'VIP packages available with backstage access and designer meet-and-greets.',
       'General admission tickets include access to all runway shows and exhibitions.',
-      'Don\'t miss the biggest fashion event in North Africa!',
+      "Don't miss the biggest fashion event in North Africa!",
     ],
     category: 'Fashion',
     type: EventType.IN_PERSON,
@@ -1041,7 +1040,7 @@ export const SEED_EVENTS: SeedEvent[] = [
       country: 'Morocco',
       city: 'Casablanca',
       venue: 'Morocco Mall',
-      address: 'Boulevard de l\'Océan Atlantique, Casablanca',
+      address: "Boulevard de l'Océan Atlantique, Casablanca",
       coordinates: { lat: 33.5366, lng: -7.6862 },
     },
     capacity: 1000,
